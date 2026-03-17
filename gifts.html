@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CADEAU LIK | All Gifts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #030303;
+            --text-main: #fcfcfc;
+            --gold-accent: #d4af37;
+            --gold-hover: #f1c750;
+            --nav-bg-scrolled: rgba(5, 5, 5, 0.98);
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        a { text-decoration: none; color: inherit; transition: color 0.3s ease, background-color 0.3s ease; }
+
+        /* NAV */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background-color: var(--nav-bg-scrolled);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.8);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--text-main);
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo span { color: var(--gold-accent); }
+        .logo-mark { width: clamp(120px, 12vw, 180px); height: auto; display: block; transform: translateY(1px); image-rendering: -webkit-optimize-contrast; filter: drop-shadow(0 0 14px rgba(212,175,55,0.22)); }
+
+        .menu-toggle {
+            display: none;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.2rem;
+        }
+        nav ul li a {
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 4px;
+        }
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 1px;
+            background-color: var(--gold-accent);
+            transition: width 0.3s ease;
+        }
+        nav ul li a:hover { color: var(--gold-accent); }
+        nav ul li a:hover::after { width: 100%; }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul {
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                max-width: 300px;
+                height: 100vh;
+                background-color: var(--nav-bg-scrolled);
+                padding: 90px 35px 35px;
+                transition: right 0.4s ease;
+                border-left: 1px solid rgba(212, 175, 55, 0.1);
+                box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+                z-index: 1000;
+            }
+            nav ul.active { right: 0; }
+            nav ul li a { font-size: 1.05rem; display: block; padding: 10px 0; }
+            .logo-mark { width: clamp(80px, 22vw, 120px); height: auto; }
+        }
+
+        /* BUTTONS (reused) */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-family: var(--font-body);
+            text-decoration: none;
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .btn-secondary:hover {
+            border-color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* CATALOG + FILTERS (copied from index styling) */
+        .catalog-container {
+            padding: 120px 5% 90px;
+            background-color: var(--bg-color);
+            min-height: 100vh;
+        }
+        .catalog-header { text-align: center; margin-bottom: 50px; }
+
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--text-main);
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .section-title span { color: var(--gold-accent); }
+
+        .filters-wrapper {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            background: rgba(15, 15, 15, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            border-radius: 12px;
+            padding: 35px 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .filter-group { display:flex; flex-direction:column; align-items:center; margin-bottom:30px; width:100%; }
+        .filter-group:last-child { margin-bottom:0; padding-bottom:0; }
+        .filter-label {
+            color: var(--gold-accent);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+            font-family: var(--font-heading);
+            margin-bottom: 15px;
+        }
+        .filter-buttons { display:flex; flex-wrap:wrap; justify-content:center; gap:12px; }
+        .filter-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ccc;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold-accent);
+            color: var(--text-main);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .catalog-tier-title {
+            text-align: center;
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            text-transform: capitalize;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 15px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .catalog-tier-title.hidden { display: none !important; }
+
+        .gifts-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            max-width: 1300px;
+            margin: 0 auto 80px;
+        }
+
+        /* Tier backgrounds (Standard / Premium) */
+        .catalog-tier-section {
+            position: relative;
+            padding: 80px 5% 50px;
+            border-radius: 0;
+            overflow: hidden;
+            border: none;
+            background: transparent;
+            /* Full-bleed background across the viewport */
+            margin-left: calc(50% - 50vw);
+            margin-right: calc(50% - 50vw);
+            margin-bottom: 0;
+            max-width: none;
+        }
+
+        .catalog-tier-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: saturate(1.03) contrast(1.01);
+            transform: scale(1.02);
+        }
+
+        .catalog-tier-section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.50) 100%);
+        }
+
+        .catalog-tier-section.standard-tier::before { background-image: url('assets/standard-section-bg.png'); }
+        .catalog-tier-section.premium-tier::before { background-image: url('assets/premium-section-bg.png'); }
+
+        .catalog-tier-section > * { position: relative; z-index: 1; }
+        .catalog-tier-section .gifts-grid { margin-bottom: 0; }
+        .gift-card {
+            flex: 1 1 calc(33.333% - 40px);
+            max-width: 450px;
+            min-width: 320px;
+            background: linear-gradient(180deg, #121212 0%, #050505 100%);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            transition: all 0.4s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        @media (max-width: 900px) { .gift-card { flex: 1 1 calc(50% - 40px); } }
+        @media (max-width: 600px) { .gift-card { flex: 1 1 100%; max-width: 100%; min-width: 0; } }
+
+        .gift-card.hidden { display: none !important; }
+
+        .specific-label-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(10, 10, 10, 0.85);
+            color: var(--gold-accent);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            z-index: 10;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+        }
+        .card-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #d4af37 0%, #a67c00 100%);
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .badge-premium { background: linear-gradient(135deg, #111 0%, #222 100%); color: var(--gold-accent); border: 1px solid var(--gold-accent); }
+
+        .gift-image-wrapper { position: relative; width: 100%; padding-top: 80%; overflow: hidden; background-color: #1a1a1a; background-size: cover; background-position: center; background-repeat: no-repeat; }
+        .gift-image-placeholder {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            background: radial-gradient(circle, #2a2a2a 0%, #111 100%);
+            color: #444; font-size: 3rem;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .gift-card:hover .gift-image-placeholder { transform: scale(1.08); }
+
+
+        .gift-content { padding: 25px 25px 30px; flex: 1; display: flex; flex-direction: column; }
+        .gift-title { font-size: 1.3rem; color: var(--gold-accent); margin-bottom: 10px; font-family: var(--font-heading); letter-spacing: 1px; line-height: 1.3; }
+        .gift-desc { font-size: 0.85rem; color: #999; margin-bottom: 20px; line-height: 1.5; font-weight: 300; }
+        .gift-includes { margin-bottom: 25px; flex: 1; }
+        .gift-includes-title {
+            font-size: 0.75rem; color: var(--text-main); text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 4px;
+        }
+        .gift-includes ul { list-style: none; padding: 0; margin: 0; }
+        .gift-includes li { font-size: 0.85rem; color: #ccc; padding: 4px 0 4px 15px; position: relative; line-height: 1.4; }
+        .gift-includes li::before { content: '•'; color: var(--gold-accent); position: absolute; left: 0; top: 4px; }
+        .gift-footer { display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px; }
+        .gift-price { font-size: 1.4rem; color: var(--text-main); font-weight: 500; letter-spacing: 1px; }
+        .gift-price span { font-size: 0.8rem; color: #888; font-weight: 300; letter-spacing: 0; }
+
+        .btn-order {
+            width: 100%;
+            padding: 14px 0;
+            background: transparent;
+            color: var(--gold-accent);
+            border: 1px solid var(--gold-accent);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-family: var(--font-body);
+        }
+        .btn-order:hover { background: var(--gold-accent); color: #000; box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+
+        .custom-box-section {
+            margin-top: 80px;
+            background:
+                linear-gradient(135deg, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.75) 100%),
+                url('assets/custom-box-bg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            padding: 60px 40px;
+            text-align: center;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .custom-box-icon { font-size: 3rem; color: var(--gold-accent); margin-bottom: 20px; }
+        .custom-box-title { font-size: 2rem; color: var(--text-main); font-family: var(--font-heading); margin-bottom: 20px; letter-spacing: 2px; }
+        .custom-box-desc { color: #ccc; font-size: 1.05rem; margin-bottom: 30px; max-width: 600px; line-height: 1.6; font-weight: 300; }
+        .custom-notice {
+            background: rgba(212, 175, 55, 0.05);
+            border-left: 3px solid var(--gold-accent);
+            padding: 15px 20px;
+            margin-bottom: 40px;
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            font-style: italic;
+            max-width: 700px;
+            text-align: left;
+        }
+        .custom-notice span { color: var(--gold-accent); font-weight: 500; }
+
+        /* FOOTER (LUXURY) */
+        footer.footer-lux {
+            background:
+                linear-gradient(135deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.86) 100%),
+                url('assets/footer-bg.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #fff;
+            padding: 70px 8% 45px;
+            position: relative;
+            border-top: 1px solid rgba(212, 175, 55, 0.22);
+        }
+        .footer-lux .gold-line {
+            height: 1px;
+            width: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(212,175,55,0.25) 20%, rgba(212,175,55,0.65) 50%, rgba(212,175,55,0.25) 80%, transparent 100%);
+        }
+        .footer-lux-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 36px 0;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr;
+            gap: 34px;
+            align-items: start;
+        }
+        .footer-brand { display:flex; flex-direction:column; gap:10px; }
+        .footer-brand-name { font-family: var(--font-heading); letter-spacing: 4px; text-transform: uppercase; font-size: 1.8rem; color: var(--gold-accent); }
+        .footer-tagline { color: #d0d0d0; font-weight: 300; letter-spacing: 1px; font-size: 1.02rem; font-style: italic; }
+        .footer-col-title { font-size: 0.78rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(212,175,55,0.95); margin-bottom: 14px; font-weight: 700; }
+        .footer-links-list { list-style: none; display:flex; flex-direction:column; gap:12px; padding:0; margin:0; }
+        .footer-links-list a {
+            color: #f1f1f1;
+            font-weight: 300;
+            letter-spacing: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.25s ease, transform 0.25s ease;
+        }
+        .footer-links-list a:hover { color: var(--gold-accent); transform: translateX(2px); }
+        .footer-location { color: #dcdcdc; font-weight: 300; letter-spacing: 1px; line-height: 1.9; }
+        .footer-bottom {
+            padding-top: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+            color: rgba(255,255,255,0.55);
+            font-size: 0.78rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        @media (max-width: 900px) {
+            footer.footer-lux { padding: 60px 5% 40px; }
+            .footer-lux-inner { grid-template-columns: 1fr; }
+            .footer-bottom { justify-content: center; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header id="navbar">
+        <a href="index.html" class="logo">
+            <img class="logo-mark" src="assets/logo.png" alt="Cadeau Lik logo" />
+            Cadeau <span>Lik</span>
+        </a>
+        <div class="menu-toggle" id="mobile-menu"><i class="fas fa-bars"></i></div>
+        <nav>
+            <ul id="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="#gifts">Gifts</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#faq">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Full Catalog -->
+        <section class="catalog-container" id="gifts">
+            <div class="catalog-header">
+                <h2 class="section-title">All <span>Gifts</span></h2>
+                <div style="margin-top: 14px;">
+                    <a href="index.html#gifts" class="btn btn-secondary" style="padding: 14px 34px;">
+                        Back to homepage
+                    </a>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-wrapper">
+                <div class="filter-group">
+                    <div class="filter-label">Gender</div>
+                    <div class="filter-buttons" id="filter-gender">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="male"><i class="fas fa-mars" style="margin-right:5px;"></i> Male</button>
+                        <button class="filter-btn" data-filter="female"><i class="fas fa-venus" style="margin-right:5px;"></i> Female</button>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="filter-label">Relation</div>
+                    <div class="filter-buttons" id="filter-relation">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="parents">Parents</button>
+                        <button class="filter-btn" data-filter="partner">Partner</button>
+                        <button class="filter-btn" data-filter="friend">Friend</button>
+                        <button class="filter-btn" data-filter="sibling">Sibling</button>
+                        <button class="filter-btn" data-filter="kids">Kids</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Standard -->
+            <div class="catalog-tier-section standard-tier">
+                <div class="catalog-tier-title">Standard Collection (200 MAD)</div>
+                <div class="gifts-grid">
+                <!-- Standard: parents - male -->
+                <div class="gift-card" data-gender="male" data-relation="parents" data-tier="standard">
+                    <div class="specific-label-badge">Father</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-box"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Standard Box</h3>
+                        <p class="gift-desc">A beautiful arrangement perfectly suited for your father.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">200 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Standard: parents - female -->
+                <div class="gift-card" data-gender="female" data-relation="parents" data-tier="standard">
+                    <div class="specific-label-badge">Mother</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-box"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Standard Box</h3>
+                        <p class="gift-desc">A beautiful arrangement perfectly suited for your mother.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">200 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Standard: partner - male -->
+                <div class="gift-card" data-gender="male" data-relation="partner" data-tier="standard">
+                    <div class="specific-label-badge">Husband / BF</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-box"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Standard Box</h3>
+                        <p class="gift-desc">A beautiful arrangement perfectly suited for your husband / bf.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">200 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Standard: partner - female -->
+                <div class="gift-card" data-gender="female" data-relation="partner" data-tier="standard">
+                    <div class="specific-label-badge">Wife / GF</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-box"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Standard Box</h3>
+                        <p class="gift-desc">A beautiful arrangement perfectly suited for your wife / gf.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">200 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Standard: friend - male -->
+                <div class="gift-card" data-gender="male" data-relation="friend" data-tier="standard">
+                    <div class="specific-label-badge">Male Friend</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-box"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Standard Box</h3>
+                        <p class="gift-desc">A beautiful arrangement perfectly suited for your male friend.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">200 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Standard: friend - female -->
+                <div class="gift-card" data-gender="female" data-relation="friend" data-tier="standard">
+                    <div class="specific-label-badge">Female Friend</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-box"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Standard Box</h3>
+                        <p class="gift-desc">A beautiful arrangement perfectly suited for your female friend.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">200 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Standard: sibling - male -->
+                <div class="gift-card" data-gender="male" data-relation="sibling" data-tier="standard">
+                    <div class="specific-label-badge">Brother</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-box"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Standard Box</h3>
+                        <p class="gift-desc">A beautiful arrangement perfectly suited for your brother.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">200 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Standard: sibling - female -->
+                <div class="gift-card" data-gender="female" data-relation="sibling" data-tier="standard">
+                    <div class="specific-label-badge">Sister</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-box"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Standard Box</h3>
+                        <p class="gift-desc">A beautiful arrangement perfectly suited for your sister.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">200 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Standard: kids - male -->
+                <div class="gift-card" data-gender="male" data-relation="kids" data-tier="standard">
+                    <div class="specific-label-badge">Son</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-box"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Standard Box</h3>
+                        <p class="gift-desc">A beautiful arrangement perfectly suited for your son.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">200 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Standard: kids - female -->
+                <div class="gift-card" data-gender="female" data-relation="kids" data-tier="standard">
+                    <div class="specific-label-badge">Daughter</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-box"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Standard Box</h3>
+                        <p class="gift-desc">A beautiful arrangement perfectly suited for your daughter.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">200 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Premium -->
+            <div class="catalog-tier-section premium-tier">
+                <div class="catalog-tier-title">Premium Collection (400 MAD)</div>
+                <div class="gifts-grid">
+                <!-- Premium: parents - male -->
+                <div class="gift-card" data-gender="male" data-relation="parents" data-tier="premium">
+                    <div class="specific-label-badge">Father</div>
+                    <div class="card-badge badge-premium">Premium</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-gem"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Premium Box</h3>
+                        <p class="gift-desc">An elevated luxury experience crafted to leave a lasting impression.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li><li>Item 6 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">400 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Premium: parents - female -->
+                <div class="gift-card" data-gender="female" data-relation="parents" data-tier="premium">
+                    <div class="specific-label-badge">Mother</div>
+                    <div class="card-badge badge-premium">Premium</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-gem"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Premium Box</h3>
+                        <p class="gift-desc">An elevated luxury experience crafted to leave a lasting impression.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li><li>Item 6 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">400 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Premium: partner - male -->
+                <div class="gift-card" data-gender="male" data-relation="partner" data-tier="premium">
+                    <div class="specific-label-badge">Husband / BF</div>
+                    <div class="card-badge badge-premium">Premium</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-gem"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Premium Box</h3>
+                        <p class="gift-desc">An elevated luxury experience crafted to leave a lasting impression.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li><li>Item 6 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">400 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Premium: partner - female -->
+                <div class="gift-card" data-gender="female" data-relation="partner" data-tier="premium">
+                    <div class="specific-label-badge">Wife / GF</div>
+                    <div class="card-badge badge-premium">Premium</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-gem"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Premium Box</h3>
+                        <p class="gift-desc">An elevated luxury experience crafted to leave a lasting impression.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li><li>Item 6 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">400 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Premium: friend - male -->
+                <div class="gift-card" data-gender="male" data-relation="friend" data-tier="premium">
+                    <div class="specific-label-badge">Male Friend</div>
+                    <div class="card-badge badge-premium">Premium</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-gem"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Premium Box</h3>
+                        <p class="gift-desc">An elevated luxury experience crafted to leave a lasting impression.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li><li>Item 6 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">400 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Premium: friend - female -->
+                <div class="gift-card" data-gender="female" data-relation="friend" data-tier="premium">
+                    <div class="specific-label-badge">Female Friend</div>
+                    <div class="card-badge badge-premium">Premium</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-gem"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Premium Box</h3>
+                        <p class="gift-desc">An elevated luxury experience crafted to leave a lasting impression.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li><li>Item 6 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">400 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Premium: sibling - male -->
+                <div class="gift-card" data-gender="male" data-relation="sibling" data-tier="premium">
+                    <div class="specific-label-badge">Brother</div>
+                    <div class="card-badge badge-premium">Premium</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-gem"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Premium Box</h3>
+                        <p class="gift-desc">An elevated luxury experience crafted to leave a lasting impression.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li><li>Item 6 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">400 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Premium: sibling - female -->
+                <div class="gift-card" data-gender="female" data-relation="sibling" data-tier="premium">
+                    <div class="specific-label-badge">Sister</div>
+                    <div class="card-badge badge-premium">Premium</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-gem"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Premium Box</h3>
+                        <p class="gift-desc">An elevated luxury experience crafted to leave a lasting impression.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li><li>Item 6 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">400 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Premium: kids - male -->
+                <div class="gift-card" data-gender="male" data-relation="kids" data-tier="premium">
+                    <div class="specific-label-badge">Son</div>
+                    <div class="card-badge badge-premium">Premium</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-gem"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Premium Box</h3>
+                        <p class="gift-desc">An elevated luxury experience crafted to leave a lasting impression.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li><li>Item 6 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">400 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                <!-- Premium: kids - female -->
+                <div class="gift-card" data-gender="female" data-relation="kids" data-tier="premium">
+                    <div class="specific-label-badge">Daughter</div>
+                    <div class="card-badge badge-premium">Premium</div>
+                    <div class="gift-image-wrapper"><div class="gift-image-placeholder"><i class="fas fa-gem"></i></div></div>
+                    <div class="gift-content">
+                        <h3 class="gift-title">Premium Box</h3>
+                        <p class="gift-desc">An elevated luxury experience crafted to leave a lasting impression.</p>
+                        <div class="gift-includes"><div class="gift-includes-title">Includes:</div><ul>
+                            <li>Item 1 placeholder</li><li>Item 2 placeholder</li><li>Item 3 placeholder</li><li>Item 4 placeholder</li><li>Item 5 placeholder</li><li>Item 6 placeholder</li>
+                        </ul></div>
+                        <div class="gift-footer"><div class="gift-price">400 <span>MAD</span></div></div>
+                        <a href="#" class="btn-order"><i class="fas fa-shopping-bag"></i> Buy Gift</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Custom Box -->
+            <div class="custom-box-section" id="custom-box">
+                <i class="fas fa-box-open custom-box-icon"></i>
+                <h3 class="custom-box-title">Build Your Own Box</h3>
+                <p class="custom-box-desc">Want something truly unique? Select your own custom items to create a personalized gift box tailored perfectly to their tastes.</p>
+                <div class="custom-notice">
+                    <i class="fas fa-info-circle" style="margin-right:8px;"></i>
+                    <span>Note:</span> Custom orders require an advance payment, as each box is made exclusively for you.
+                </div>
+                <a class="btn-order" href="product.html?pack=custom&gift=Custom%20Box">
+                    <i class="fas fa-box-open"></i> Buy Custom Box
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer-lux">
+        <div class="gold-line"></div>
+        <div class="footer-lux-inner">
+            <div class="footer-brand">
+                <div class="footer-brand-name">CADEAU LIK</div>
+                <div class="footer-tagline">Made to be yours</div>
+            </div>
+            <div class="footer-col">
+                <div class="footer-col-title">Contact</div>
+                <ul class="footer-links-list">
+                    <li><a href="https://wa.me/212783552622" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+                    <li><a href="https://instagram.com/aiss_a__mkf" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="mailto:aissamkf@gmail.com"><i class="fas fa-envelope"></i> Email</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <div class="footer-col-title">Location</div>
+                <div class="footer-location">Morocco</div>
+            </div>
+        </div>
+        <div class="gold-line"></div>
+        <div class="footer-bottom">
+            <div>&copy; 2026 CADEAU LIK. All Rights Reserved.</div>
+            <div>Luxury gifts, delivered</div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+        const icon = mobileMenu?.querySelector('i');
+
+        mobileMenu?.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            if (navLinks.classList.contains('active')) {
+                icon?.classList.remove('fa-bars');
+                icon?.classList.add('fa-times');
+                document.body.style.overflow = 'hidden';
+            } else {
+                icon?.classList.remove('fa-times');
+                icon?.classList.add('fa-bars');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Catalog filtering + product navigation
+        document.addEventListener('DOMContentLoaded', () => {
+            const relationBtns = document.querySelectorAll('#filter-relation .filter-btn');
+            const genderBtns = document.querySelectorAll('#filter-gender .filter-btn');
+            const giftCards = document.querySelectorAll('.gift-card');
+
+            let currentFilters = { relation: 'all', gender: 'all' };
+
+            function setupFilterGroup(buttons, filterKey) {
+                buttons.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        buttons.forEach(b => b.classList.remove('active'));
+                        e.target.closest('.filter-btn').classList.add('active');
+                        currentFilters[filterKey] = e.target.closest('.filter-btn').getAttribute('data-filter');
+                        applyFilters();
+                    });
+                });
+            }
+
+            function applyFilters() {
+                let visibleStandardCounts = 0;
+                let visiblePremiumCounts = 0;
+
+                giftCards.forEach(card => {
+                    const cardRelation = card.getAttribute('data-relation');
+                    const cardGender = card.getAttribute('data-gender');
+                    const cardTier = card.getAttribute('data-tier');
+
+                    const matchRelation = currentFilters.relation === 'all' || cardRelation === currentFilters.relation;
+                    const matchGender = currentFilters.gender === 'all' || cardGender === currentFilters.gender;
+
+                    if (matchRelation && matchGender) {
+                        card.classList.remove('hidden');
+                        if (cardTier === 'standard') visibleStandardCounts++;
+                        if (cardTier === 'premium') visiblePremiumCounts++;
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+
+                const tierTitles = document.querySelectorAll('.catalog-tier-title');
+                if (tierTitles.length >= 2) {
+                    if (visibleStandardCounts === 0) tierTitles[0].classList.add('hidden');
+                    else tierTitles[0].classList.remove('hidden');
+
+                    if (visiblePremiumCounts === 0) tierTitles[1].classList.add('hidden');
+                    else tierTitles[1].classList.remove('hidden');
+                }
+            }
+
+            setupFilterGroup(relationBtns, 'relation');
+            setupFilterGroup(genderBtns, 'gender');
+
+            // Make cards + buttons go to product page
+            giftCards.forEach((card) => {
+                const btn = card.querySelector('.btn-order');
+                if (!btn) return;
+
+                const gender = card.getAttribute('data-gender') || '';
+                const relation = card.getAttribute('data-relation') || '';
+                const tier = card.getAttribute('data-tier') || '';
+
+                const title = card.querySelector('.gift-title')?.textContent?.trim() || 'Gift';
+                const badge = card.querySelector('.specific-label-badge')?.textContent?.trim();
+                const giftName = badge ? `${badge} — ${title}` : title;
+
+                const params = new URLSearchParams({ gift: giftName, gender, relation, tier });
+                const productUrl = `product.html?${params.toString()}`;
+
+                btn.setAttribute('href', productUrl);
+
+                card.style.cursor = 'pointer';
+                card.setAttribute('role', 'link');
+                card.setAttribute('tabindex', '0');
+
+                card.addEventListener('click', (e) => {
+                    if (e.defaultPrevented) return;
+                    if (e.target.closest('a, button, input, select, textarea, label')) return;
+                    window.location.href = productUrl;
+                });
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        if (e.target.closest('a, button, input, select, textarea, label')) return;
+                        e.preventDefault();
+                        window.location.href = productUrl;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
