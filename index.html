@@ -263,7 +263,7 @@
       display:flex; align-items:center;
       padding:0 3rem;
       overflow:hidden;
-      background:#0e0e0e;
+      background:#000000;
       /* BACKGROUND IMAGE SLOT:
          When you have the image, uncomment:
          background: #0e0e0e; (keep as base)
@@ -278,21 +278,46 @@
       opacity:0.4; transform:scale(1.05);
       display:block;
     }
-    /* Floating gift box card — top-right, exact Stitch dimensions */
+    /* Hand animation */
+    @keyframes handSlideIn {
+      from { transform: translateY(100vh); opacity: 0; }
+      to   { transform: translateY(0);     opacity: 1; }
+    }
+    .hero-hand {
+      position: absolute;
+      top: calc(12% + 12rem);
+      right: 18%;
+      width: 30rem;
+      z-index: 5;
+      pointer-events: none;
+      animation: handSlideIn 1.6s ease-out 0.3s both;
+    }
+    .hero-hand img {
+      width: 100%;
+      display: block;
+    }
+    @media (max-width:900px) {
+      .hero-hand { width:20rem; top:calc(15% + 6rem); right:2%; }
+    }
+    @media (max-width:640px) {
+      .hero-hand { display:none; }
+    }
+
+    /* Floating gift box card */
     .hero-float-card {
       position:absolute;
-      top:20%; right:10%;
-      width:20rem; height:20rem;           /* w-80 h-80 */
-      background:linear-gradient(135deg, #1a1a1a 0%, #050505 100%); /* luxury-gradient */
-      border:1px solid rgba(201,184,150,0.25);                        /* ghost-border */
-      box-shadow:0 0 15px rgba(201,184,150,0.15);                     /* filament-glow */
-      border-radius:2rem;                  /* rounded-lg from tailwind config */
+      top:12%; right:10%;
+      width:15rem; height:15rem;
+      background:linear-gradient(135deg, #1a1a1a 0%, #050505 100%);
+      border:1px solid rgba(201,184,150,0.25);
+      box-shadow:0 0 15px rgba(201,184,150,0.15);
+      border-radius:2rem;
       display:flex; align-items:center; justify-content:center;
       z-index:10;
       overflow:hidden;
     }
     .hero-float-card img {
-      width:16rem; height:16rem;           /* w-64 h-64 */
+      width:12rem; height:12rem;
       object-fit:cover;
     }
     .hero-float-card .float-placeholder {
@@ -773,8 +798,8 @@
     ============================================================ */
     @media (max-width:900px) {
       header > nav { display:none; }
-      .hero-float-card { width:14rem; height:14rem; right:4%; top:15%; }
-      .hero-float-card img { width:11rem; height:11rem; }
+      .hero-float-card { width:11rem; height:11rem; right:4%; top:12%; }
+      .hero-float-card img { width:9rem; height:9rem; }
       .hero-content { max-width:100%; }
       .about-inner { flex-direction:column; }
       .steps-grid { grid-template-columns:1fr; }
@@ -852,12 +877,11 @@
         -->
       </div>
 
-      <!-- Floating gift box card — absolute top-right, exact Stitch w-80 h-80 -->
-      <div class="hero-float-card">
-        <img src="assets/premium-gift.png" alt="Luxury gift box"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-        <div class="float-placeholder" style="display:none"><i class="fas fa-gift"></i></div>
+      <!-- Hand — slides in from left -->
+      <div class="hero-hand">
+        <img src="assets/hero-hand.png" alt="">
       </div>
+
 
       <!-- Hero content — exact Stitch structure -->
       <div class="hero-content">
