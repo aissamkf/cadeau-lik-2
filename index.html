@@ -706,7 +706,9 @@
     .person-section.visible .tier-row > *:nth-child(3) { animation:cardSlideIn 0.5s ease forwards; animation-delay:0.39s; }
 
     @media (max-width:768px) {
-      .tier-row { grid-template-columns:1fr; }
+      .tier-row { flex-direction:column; align-items:stretch; gap:20px; }
+      .tier-card { width:100%; }
+      .tier-card-byo { width:100%; }
       .byo-section { flex-direction:column; padding:32px; }
     }
     @media (max-width:640px) {
