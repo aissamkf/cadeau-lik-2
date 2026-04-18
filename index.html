@@ -53,28 +53,14 @@
       content:'';
       position:absolute; inset:0;
       background-image:
-        linear-gradient(rgba(212,175,55,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(212,175,55,0.05) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
       background-size:32px 32px;
       pointer-events:none; z-index:0;
     }
-    .section-bg::after {
-      content:'';
-      position:absolute;
-      top:-80px; left:-80px;
-      width:320px; height:320px;
-      background:radial-gradient(circle, rgba(212,175,55,0.18) 0%, transparent 70%);
-      border-radius:50%;
-      pointer-events:none; z-index:0;
-    }
-    .orb-br {
-      position:absolute;
-      bottom:-80px; right:-60px;
-      width:260px; height:260px;
-      background:radial-gradient(circle, rgba(241,199,80,0.12) 0%, transparent 70%);
-      border-radius:50%;
-      pointer-events:none; z-index:0;
-    }
+    .section-bg::after { display:none; }
+    .section-bg::before { display:none; }
+    .orb-br { display:none; }
     .section-inner { position:relative; z-index:1; }
 
     /* ============================================================
@@ -187,29 +173,30 @@
     }
     header {
       position:fixed; top:0; left:0; width:100%;
-      padding:24px 3rem;
+      padding:4px 3rem;
       display:flex; justify-content:space-between; align-items:center;
       z-index:50;
-      background:transparent;
-      backdrop-filter:blur(12px);
-      -webkit-backdrop-filter:blur(12px);
-      transition:background 0.5s ease, padding 0.5s ease;
+      background:rgba(80,80,80,0.25);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      transition:background 0.5s ease, padding 0.5s ease, transform 0.35s ease;
     }
     header.scrolled {
-      background:rgba(5,5,5,0.95);
-      backdrop-filter:blur(10px);
-      padding:16px 3rem;
+      background:rgba(60,60,60,0.45);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      padding:6px 3rem;
     }
     .logo-wrapper {
       display:flex; align-items:center; gap:10px;
       user-select:none; flex-shrink:0;
     }
-    .logo-img { height:48px; width:auto; object-fit:contain; display:block; }
+    .logo-img { height:72px; width:auto; object-fit:contain; display:block; margin-left:-16px; }
     .logo-text {
       font-family:var(--font-heading);
       font-size:1.75rem; font-weight:500;
       font-style:italic;
-      color:var(--stitch-primary-container);
+      color:#fff;
       letter-spacing:0.05em;
     }
     /* Center nav links */
@@ -533,9 +520,9 @@
     .tab-btn:hover { color:rgba(255,255,255,0.8); }
     .tab-btn.active { color:var(--text-main); border-bottom-color:var(--stitch-primary); }
 
-    /* Gender groups — show/hide */
-    .catalog-group { display:none; }
-    .catalog-group.visible { display:block; }
+    /* Gender filter — show/hide person sections */
+    .person-section { display:block; }
+    .person-section.hidden { display:none; }
 
     /* Each person section (Father, Husband, etc.) */
     .person-section { margin-bottom:80px; }
@@ -641,20 +628,21 @@
 
     /* Build your own */
     .byo-section {
-      margin-top:80px; background:var(--stitch-primary-container);
+      margin-top:80px;
+      background:linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)), url('assets/hero-bg.png') center/cover no-repeat;
       border-radius:16px; padding:48px; display:flex;
       align-items:center; justify-content:space-between; gap:40px; flex-wrap:wrap;
     }
     .byo-text .byo-label {
       font-size:0.68rem; letter-spacing:3px; text-transform:uppercase;
-      color:var(--stitch-on-primary-container); opacity:0.6; margin-bottom:10px; display:block;
+      color:var(--gold); margin-bottom:10px; display:block;
     }
     .byo-text .byo-title {
       font-family:var(--font-heading); font-size:1.8rem;
-      color:var(--stitch-on-primary-container); line-height:1.3; margin-bottom:8px;
+      color:#fff; line-height:1.3; margin-bottom:8px;
     }
     .byo-text .byo-desc {
-      font-size:0.9rem; color:var(--stitch-on-primary-container); opacity:0.7; line-height:1.6;
+      font-size:0.9rem; color:rgba(255,255,255,0.65); line-height:1.6;
     }
     .byo-btn {
       flex-shrink:0; background:var(--stitch-on-primary-container);
@@ -728,50 +716,51 @@
     /* ============================================================
        FAQ
     ============================================================ */
-    .faq-section { padding:100px 6%; background:var(--bg); }
+    .faq-section {
+      padding:100px 6%;
+      background:linear-gradient(to bottom, #000 0%, #000 8%, #2e2e2e 100%);
+    }
     .faq-inner { max-width:800px; margin:0 auto; }
     .faq-header { text-align:center; margin-bottom:56px; }
-    .faq-accordion { display:flex; flex-direction:column; gap:12px; }
-    .faq-item { border-radius:var(--radius-card); overflow:hidden; }
+    .faq-accordion { display:flex; flex-direction:column; }
+    .faq-item {
+      position:relative; overflow:hidden;
+      border-bottom:1px solid rgba(255,255,255,0.07);
+    }
+    .faq-item:first-child { border-top:1px solid rgba(255,255,255,0.07); }
     .faq-trigger {
-      width:100%; background:var(--glass-bg); border:1px solid var(--glass-border);
-      border-radius:var(--radius-card); padding:20px 24px;
-      display:flex; align-items:center; justify-content:space-between;
-      cursor:pointer; transition:border-color var(--transition), background var(--transition);
+      width:100%; background:transparent; border:none;
+      padding:26px 0;
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      cursor:default;
       color:var(--text-main); font-family:var(--font-body); text-align:left;
     }
-    .faq-trigger:hover { border-color:var(--gold); background:rgba(212,175,55,0.08); }
-    .faq-trigger[aria-expanded="true"] {
-      border-color:var(--gold);
-      border-bottom-left-radius:0; border-bottom-right-radius:0;
+    .faq-question { font-size:1rem; font-weight:500; transition:color 0.3s; }
+    .faq-icon {
+      color:var(--text-muted); font-size:0.7rem; flex-shrink:0;
+      width:20px; height:20px; border-radius:50%;
+      border:1px solid rgba(255,255,255,0.18);
+      display:flex; align-items:center; justify-content:center;
+      transition:color 0.3s, border-color 0.3s, transform 0.35s ease;
     }
-    .faq-question { font-size:0.95rem; font-weight:500; }
-    .faq-icon { color:var(--gold); font-size:0.85rem; transition:transform 0.3s ease; flex-shrink:0; }
-    .faq-trigger[aria-expanded="true"] .faq-icon { transform:rotate(45deg); }
     .faq-panel {
-      max-height:0; overflow:hidden; transition:max-height 0.4s ease;
-      background:rgba(212,175,55,0.03); border:1px solid var(--glass-border);
-      border-top:none;
-      border-bottom-left-radius:var(--radius-card);
-      border-bottom-right-radius:var(--radius-card);
+      max-height:0; overflow:hidden;
+      transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);
     }
     .faq-panel-inner {
-      padding:20px 24px; font-size:0.9rem;
-      color:var(--text-muted); line-height:1.75;
+      padding:0 0 24px; font-size:0.9rem;
+      color:var(--gold); line-height:1.8;
     }
     .faq-panel-inner p + p { margin-top:8px; }
+    .faq-item:hover .faq-question { color:#fff; }
+    .faq-item:hover .faq-icon { color:#fff; border-color:rgba(255,255,255,0.6); transform:rotate(45deg); }
+    .faq-item:hover .faq-panel { max-height:200px; }
 
     /* ============================================================
        FOOTER
     ============================================================ */
     .footer-lux { background:var(--bg); position:relative; overflow:hidden; }
-    .footer-lux::before {
-      content:''; position:absolute; inset:0;
-      background-image:
-        linear-gradient(rgba(212,175,55,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(212,175,55,0.04) 1px, transparent 1px);
-      background-size:32px 32px; pointer-events:none;
-    }
+    .footer-lux::before { display:none; }
     .gold-line {
       height:1px;
       background:linear-gradient(to right, transparent, var(--gold), transparent);
@@ -1005,60 +994,78 @@
        ORDER MODAL
     ============================================================ */
     #orderModalOverlay {
-      position:fixed; inset:0; background:rgba(0,0,0,0.7);
-      backdrop-filter:blur(6px); z-index:3000;
-      display:none; align-items:center; justify-content:center; padding:20px;
+      position:fixed; inset:0; background:rgba(0,0,0,0.55);
+      backdrop-filter:blur(3px); z-index:3000;
+      display:none; align-items:stretch; justify-content:flex-end;
     }
     #orderModalOverlay[aria-hidden="false"] { display:flex; }
     .order-modal {
-      background:#1a1a1a; border:1px solid var(--glass-border);
-      border-radius:20px; width:100%; max-width:640px; max-height:90vh; overflow-y:auto;
+      background:#fff; border:none;
+      border-radius:0; width:100%; max-width:480px; max-height:96vh;
+      overflow-y:auto; box-shadow:-4px 0 30px rgba(0,0,0,0.18);
     }
-    .order-modal-header { padding:28px; border-bottom:1px solid var(--glass-border); }
+    .order-modal-header {
+      padding:20px 20px 16px; border-bottom:1px solid #e5e5e5;
+      display:flex; align-items:center; justify-content:space-between;
+    }
     .order-modal-close {
-      background:none; border:none; color:var(--text-muted); font-size:1.1rem;
-      cursor:pointer; float:right; transition:color var(--transition);
+      background:none; border:none; color:#111; font-size:1.1rem;
+      cursor:pointer; transition:opacity 0.2s; padding:4px;
     }
-    .order-modal-close:hover { color:var(--gold); }
-    .order-header-titles { margin-bottom:16px; }
-    .order-header-title { font-family:var(--font-heading); font-size:1.5rem; margin-bottom:4px; }
-    .order-header-title span { color:var(--gold); }
-    .order-header-subtitle { font-size:0.82rem; color:var(--text-muted); }
-    .order-summary-strip {
-      display:flex; align-items:center; gap:14px;
-      background:var(--glass-bg); border:1px solid var(--glass-border);
-      border-radius:10px; padding:14px;
+    .order-modal-close:hover { opacity:0.5; }
+    .order-header-title {
+      font-family:var(--font-body); font-size:1rem; font-weight:700;
+      color:#111; letter-spacing:0.5px; text-transform:uppercase;
     }
-    .order-summary-icon { font-size:1.4rem; color:var(--gold); }
-    .order-summary-main { flex:1; }
-    .order-summary-title { font-size:0.9rem; font-weight:500; }
-    .order-summary-meta { font-size:0.78rem; color:var(--text-muted); }
-    .order-summary-price { font-family:var(--font-heading); font-size:1.1rem; color:var(--gold); }
-    .order-modal-body { padding:28px; }
-    .order-modal-body h2 { font-family:var(--font-heading); font-size:1.2rem; margin-bottom:4px; }
-    .order-subtitle { font-size:0.82rem; color:var(--text-muted); margin-bottom:24px; }
+    .order-header-title span { color:#111; }
+    .order-header-subtitle { display:none; }
+    .order-modal-body { padding:0 20px 20px; }
     .order-section-title {
-      font-size:0.7rem; letter-spacing:2px; text-transform:uppercase;
-      color:var(--gold); margin:20px 0 12px;
+      font-size:0.68rem; letter-spacing:2px; text-transform:uppercase;
+      color:#999; font-weight:600; margin:20px 0 10px;
     }
-    .order-section-divider { height:1px; background:var(--glass-border); margin:24px 0; }
-    .order-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-    .order-field { display:flex; flex-direction:column; gap:6px; }
+    .order-section-divider { height:1px; background:#e5e5e5; margin:20px 0; }
+    .order-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .order-field { display:flex; flex-direction:column; gap:5px; }
     .order-field.full { grid-column:1/-1; }
-    .order-label { font-size:0.75rem; color:var(--text-muted); letter-spacing:0.5px; }
+    .order-label { font-size:0.72rem; color:#555; letter-spacing:0.3px; font-weight:500; }
     .order-input, .order-select, .order-textarea {
-      background:var(--glass-bg); border:1px solid var(--glass-border);
-      border-radius:8px; color:var(--text-main); font-family:var(--font-body);
-      font-size:0.88rem; padding:10px 14px; transition:border-color var(--transition); width:100%;
+      background:#fff; border:1.5px solid #ddd;
+      border-radius:8px; color:#111; font-family:var(--font-body);
+      font-size:0.88rem; padding:10px 12px; transition:border-color 0.2s; width:100%;
     }
     .order-input:focus, .order-select:focus, .order-textarea:focus {
-      outline:none; border-color:var(--gold);
+      outline:none; border-color:#111;
     }
     .order-textarea { resize:vertical; min-height:80px; }
-    .order-select option { background:#1a1a1a; }
-    .order-checkbox-row { display:flex; align-items:center; gap:10px; }
-    .order-checkbox-row input { accent-color:var(--gold); width:16px; height:16px; }
-    .order-modal-footer { padding:0 28px 28px; }
+    .order-select option { background:#fff; color:#111; }
+    .order-modal-footer { padding:0 20px 24px; }
+    .req { color:#c00; }
+    .order-error { font-size:0.7rem; color:#c00; min-height:13px; }
+    .order-cart-summary { display:flex; flex-direction:column; margin-bottom:0; }
+    .order-cart-item {
+      display:flex; align-items:flex-start; gap:14px;
+      padding:16px 0; border-bottom:1px solid #e5e5e5;
+    }
+    .order-cart-item-icon { font-size:2rem; flex-shrink:0; line-height:1; }
+    .order-cart-item-info { flex:1; }
+    .order-cart-item-name { font-size:0.9rem; font-weight:700; color:#111; line-height:1.3; }
+    .order-cart-item-sub { font-size:0.8rem; color:#777; margin-top:2px; }
+    .order-cart-item-price { font-size:0.9rem; font-weight:700; color:#111; white-space:nowrap; padding-top:2px; }
+    .order-price-summary { padding:16px 0 0; }
+    .order-price-row { display:flex; justify-content:space-between; font-size:0.88rem; color:#555; padding:4px 0; }
+    .order-price-row.total { font-weight:700; font-size:1rem; color:#111; padding-top:10px; border-top:1px solid #e5e5e5; margin-top:6px; }
+    .order-price-row.total span:last-child { color:#111; }
+    .order-price-divider { display:none; }
+    .order-submit-btn {
+      width:100%; padding:15px; border:none; border-radius:8px;
+      background:#25D366; color:#fff; font-size:0.88rem; font-weight:700;
+      letter-spacing:1px; text-transform:uppercase; cursor:pointer; display:flex;
+      align-items:center; justify-content:center; gap:10px; transition:opacity 0.2s;
+      font-family:var(--font-body);
+    }
+    .order-submit-btn:hover { opacity:0.9; }
+    .order-input.error, .order-select.error, .order-textarea.error { border-color:#c00 !important; }
 
     /* ============================================================
        MOBILE RESPONSIVE
@@ -1099,10 +1106,10 @@
   <!-- NAVIGATION — exact Stitch layout -->
   <header id="navbar">
     <!-- Logo left: image + italic serif text -->
-    <div class="logo-wrapper">
+    <a href="index.html" class="logo-wrapper" style="text-decoration:none;">
       <img src="logo.png" alt="Cadeau Lik Logo" class="logo-img">
       <span class="logo-text">CADEAU LIK</span>
-    </div>
+    </a>
 
     <!-- Nav centered (absolute center via CSS) -->
     <nav>
@@ -1239,37 +1246,37 @@
             <p class="catalog-subtitle">Curated collections for every special person in your life.</p>
           </div>
           <div class="tab-filters" id="catalog-tabs">
-            <button class="tab-btn active" data-group="all">All</button>
+            <button class="tab-btn" data-group="all">All</button>
             <button class="tab-btn" data-group="him">For Him</button>
-            <button class="tab-btn" data-group="her">For Her</button>
+            <button class="tab-btn active" data-group="her">For Her</button>
           </div>
         </div>
 
-        <!-- FOR HIM -->
-        <div class="catalog-group visible" data-gender="him">
+        <!-- ALL GIFTS — ordered: Wife, Husband, Mother, Father, Male Friend, Female Friend -->
+        <div id="catalogAll">
 
-          <!-- Father -->
-          <div class="person-section reveal">
-            <div class="person-heading">Father</div>
+          <!-- Wife / Girlfriend -->
+          <div class="person-section reveal" data-gender="her">
+            <div class="person-heading">Wife / Girlfriend</div>
             <div class="tier-labels">
               <div class="tier-label-btn standard">Standard</div>
               <div class="tier-label-btn premium">Premium</div>
             </div>
             <div class="tier-row">
-              <div class="tier-card" data-name="Father — Standard" data-price="200">
-                <div class="tier-card-img"><img src="assets/father-standard.png" alt="Father Standard"></div>
+              <div class="tier-card" data-name="Wife/Girlfriend — Standard" data-price="200">
+                <div class="tier-card-img"><img src="assets/wife-standard.png" alt="Wife Standard"></div>
                 <div class="tier-card-body">
                   <span class="tier-badge standard">Standard</span>
-                  <div class="tier-card-desc">A thoughtfully curated gift for your father.</div>
+                  <div class="tier-card-desc">A thoughtfully curated gift for your partner.</div>
                   <div class="tier-card-footer"><div class="tier-card-price">200 <span>DH</span></div></div>
                   <button class="btn-order" onclick="goToProduct(this)"><i class="fas fa-gift"></i> Buy Gift</button>
                 </div>
               </div>
-              <div class="tier-card" data-name="Father — Premium" data-price="400">
-                <div class="tier-card-img"><img src="assets/father-premium.png" alt="Father Premium"></div>
+              <div class="tier-card" data-name="Wife/Girlfriend — Premium" data-price="400">
+                <div class="tier-card-img"><img src="assets/wife-premium.png" alt="Wife Premium"></div>
                 <div class="tier-card-body">
                   <span class="tier-badge premium">Premium</span>
-                  <div class="tier-card-desc">A luxurious gift experience for your father.</div>
+                  <div class="tier-card-desc">A luxurious gift experience for your partner.</div>
                   <div class="tier-card-footer"><div class="tier-card-price">400 <span>DH</span></div></div>
                   <button class="btn-order" onclick="goToProduct(this)"><i class="fas fa-gift"></i> Buy Gift</button>
                 </div>
@@ -1279,13 +1286,13 @@
                 <div class="byo-heading">Build Your Own Box</div>
                 <div class="byo-sub">Want something truly unique? Select your own custom items to create a personalized gift box tailored perfectly to their tastes.</div>
                 <div class="byo-note"><i class="fas fa-triangle-exclamation"></i> All orders require an advance payment, as each box is made to order.</div>
-                <a href="https://wa.me/212783552622" class="byo-btn" target="_blank" style="margin-top:auto;">✦ CUSTOMIZE YOUR OWN</a>
+                <a href="custom.html" class="byo-btn" style="margin-top:auto;">✦ CUSTOMIZE YOUR OWN</a>
               </div>
             </div>
           </div>
 
           <!-- Husband / Boyfriend -->
-          <div class="person-section reveal">
+          <div class="person-section reveal" data-gender="him">
             <div class="person-heading">Husband / Boyfriend</div>
             <div class="tier-labels">
               <div class="tier-label-btn standard">Standard</div>
@@ -1315,13 +1322,85 @@
                 <div class="byo-heading">Build Your Own Box</div>
                 <div class="byo-sub">Want something truly unique? Select your own custom items to create a personalized gift box tailored perfectly to their tastes.</div>
                 <div class="byo-note"><i class="fas fa-triangle-exclamation"></i> All orders require an advance payment, as each box is made to order.</div>
-                <a href="https://wa.me/212783552622" class="byo-btn" target="_blank" style="margin-top:auto;">✦ CUSTOMIZE YOUR OWN</a>
+                <a href="custom.html" class="byo-btn" style="margin-top:auto;">✦ CUSTOMIZE YOUR OWN</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mother -->
+          <div class="person-section reveal" data-gender="her">
+            <div class="person-heading">Mother</div>
+            <div class="tier-labels">
+              <div class="tier-label-btn standard">Standard</div>
+              <div class="tier-label-btn premium">Premium</div>
+            </div>
+            <div class="tier-row">
+              <div class="tier-card" data-name="Mother — Standard" data-price="200">
+                <div class="tier-card-img"><img src="assets/mother-standard.png" alt="Mother Standard"></div>
+                <div class="tier-card-body">
+                  <span class="tier-badge standard">Standard</span>
+                  <div class="tier-card-desc">A thoughtfully curated gift for your mother.</div>
+                  <div class="tier-card-footer"><div class="tier-card-price">200 <span>DH</span></div></div>
+                  <button class="btn-order" onclick="goToProduct(this)"><i class="fas fa-gift"></i> Buy Gift</button>
+                </div>
+              </div>
+              <div class="tier-card" data-name="Mother — Premium" data-price="400">
+                <div class="tier-card-img"><img src="assets/mother-premium.png" alt="Mother Premium"></div>
+                <div class="tier-card-body">
+                  <span class="tier-badge premium">Premium</span>
+                  <div class="tier-card-desc">A luxurious gift experience for your mother.</div>
+                  <div class="tier-card-footer"><div class="tier-card-price">400 <span>DH</span></div></div>
+                  <button class="btn-order" onclick="goToProduct(this)"><i class="fas fa-gift"></i> Buy Gift</button>
+                </div>
+              </div>
+              <div class="tier-card-byo">
+                <div class="byo-icon">🎁</div>
+                <div class="byo-heading">Build Your Own Box</div>
+                <div class="byo-sub">Want something truly unique? Select your own custom items to create a personalized gift box tailored perfectly to their tastes.</div>
+                <div class="byo-note"><i class="fas fa-triangle-exclamation"></i> All orders require an advance payment, as each box is made to order.</div>
+                <a href="custom.html" class="byo-btn" style="margin-top:auto;">✦ CUSTOMIZE YOUR OWN</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Father -->
+          <div class="person-section reveal" data-gender="him">
+            <div class="person-heading">Father</div>
+            <div class="tier-labels">
+              <div class="tier-label-btn standard">Standard</div>
+              <div class="tier-label-btn premium">Premium</div>
+            </div>
+            <div class="tier-row">
+              <div class="tier-card" data-name="Father — Standard" data-price="200">
+                <div class="tier-card-img"><img src="assets/father-standard.png" alt="Father Standard"></div>
+                <div class="tier-card-body">
+                  <span class="tier-badge standard">Standard</span>
+                  <div class="tier-card-desc">A thoughtfully curated gift for your father.</div>
+                  <div class="tier-card-footer"><div class="tier-card-price">200 <span>DH</span></div></div>
+                  <button class="btn-order" onclick="goToProduct(this)"><i class="fas fa-gift"></i> Buy Gift</button>
+                </div>
+              </div>
+              <div class="tier-card" data-name="Father — Premium" data-price="400">
+                <div class="tier-card-img"><img src="assets/father-premium.png" alt="Father Premium"></div>
+                <div class="tier-card-body">
+                  <span class="tier-badge premium">Premium</span>
+                  <div class="tier-card-desc">A luxurious gift experience for your father.</div>
+                  <div class="tier-card-footer"><div class="tier-card-price">400 <span>DH</span></div></div>
+                  <button class="btn-order" onclick="goToProduct(this)"><i class="fas fa-gift"></i> Buy Gift</button>
+                </div>
+              </div>
+              <div class="tier-card-byo">
+                <div class="byo-icon">🎁</div>
+                <div class="byo-heading">Build Your Own Box</div>
+                <div class="byo-sub">Want something truly unique? Select your own custom items to create a personalized gift box tailored perfectly to their tastes.</div>
+                <div class="byo-note"><i class="fas fa-triangle-exclamation"></i> All orders require an advance payment, as each box is made to order.</div>
+                <a href="custom.html" class="byo-btn" style="margin-top:auto;">✦ CUSTOMIZE YOUR OWN</a>
               </div>
             </div>
           </div>
 
           <!-- Male Friend -->
-          <div class="person-section reveal">
+          <div class="person-section reveal" data-gender="him">
             <div class="person-heading">Male Friend</div>
             <div class="tier-labels">
               <div class="tier-label-btn standard">Standard</div>
@@ -1351,90 +1430,13 @@
                 <div class="byo-heading">Build Your Own Box</div>
                 <div class="byo-sub">Want something truly unique? Select your own custom items to create a personalized gift box tailored perfectly to their tastes.</div>
                 <div class="byo-note"><i class="fas fa-triangle-exclamation"></i> All orders require an advance payment, as each box is made to order.</div>
-                <a href="https://wa.me/212783552622" class="byo-btn" target="_blank" style="margin-top:auto;">✦ CUSTOMIZE YOUR OWN</a>
-              </div>
-            </div>
-          </div>
-
-        </div><!-- /FOR HIM -->
-
-        <!-- FOR HER -->
-        <div class="catalog-group" data-gender="her">
-
-          <!-- Mother -->
-          <div class="person-section reveal">
-            <div class="person-heading">Mother</div>
-            <div class="tier-labels">
-              <div class="tier-label-btn standard">Standard</div>
-              <div class="tier-label-btn premium">Premium</div>
-            </div>
-            <div class="tier-row">
-              <div class="tier-card" data-name="Mother — Standard" data-price="200">
-                <div class="tier-card-img"><div class="img-placeholder"><i class="fas fa-box"></i></div></div>
-                <div class="tier-card-body">
-                  <span class="tier-badge standard">Standard</span>
-                  <div class="tier-card-desc">A thoughtfully curated gift for your mother.</div>
-                  <div class="tier-card-footer"><div class="tier-card-price">200 <span>DH</span></div></div>
-                  <button class="btn-order" onclick="goToProduct(this)"><i class="fas fa-gift"></i> Buy Gift</button>
-                </div>
-              </div>
-              <div class="tier-card" data-name="Mother — Premium" data-price="400">
-                <div class="tier-card-img"><div class="img-placeholder"><i class="fas fa-box"></i></div></div>
-                <div class="tier-card-body">
-                  <span class="tier-badge premium">Premium</span>
-                  <div class="tier-card-desc">A luxurious gift experience for your mother.</div>
-                  <div class="tier-card-footer"><div class="tier-card-price">400 <span>DH</span></div></div>
-                  <button class="btn-order" onclick="goToProduct(this)"><i class="fas fa-gift"></i> Buy Gift</button>
-                </div>
-              </div>
-              <div class="tier-card-byo">
-                <div class="byo-icon">🎁</div>
-                <div class="byo-heading">Build Your Own Box</div>
-                <div class="byo-sub">Want something truly unique? Select your own custom items to create a personalized gift box tailored perfectly to their tastes.</div>
-                <div class="byo-note"><i class="fas fa-triangle-exclamation"></i> All orders require an advance payment, as each box is made to order.</div>
-                <a href="https://wa.me/212783552622" class="byo-btn" target="_blank" style="margin-top:auto;">✦ CUSTOMIZE YOUR OWN</a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Wife / Girlfriend -->
-          <div class="person-section reveal">
-            <div class="person-heading">Wife / Girlfriend</div>
-            <div class="tier-labels">
-              <div class="tier-label-btn standard">Standard</div>
-              <div class="tier-label-btn premium">Premium</div>
-            </div>
-            <div class="tier-row">
-              <div class="tier-card" data-name="Wife/Girlfriend — Standard" data-price="200">
-                <div class="tier-card-img"><div class="img-placeholder"><i class="fas fa-box"></i></div></div>
-                <div class="tier-card-body">
-                  <span class="tier-badge standard">Standard</span>
-                  <div class="tier-card-desc">A thoughtfully curated gift for your partner.</div>
-                  <div class="tier-card-footer"><div class="tier-card-price">200 <span>DH</span></div></div>
-                  <button class="btn-order" onclick="goToProduct(this)"><i class="fas fa-gift"></i> Buy Gift</button>
-                </div>
-              </div>
-              <div class="tier-card" data-name="Wife/Girlfriend — Premium" data-price="400">
-                <div class="tier-card-img"><div class="img-placeholder"><i class="fas fa-box"></i></div></div>
-                <div class="tier-card-body">
-                  <span class="tier-badge premium">Premium</span>
-                  <div class="tier-card-desc">A luxurious gift experience for your partner.</div>
-                  <div class="tier-card-footer"><div class="tier-card-price">400 <span>DH</span></div></div>
-                  <button class="btn-order" onclick="goToProduct(this)"><i class="fas fa-gift"></i> Buy Gift</button>
-                </div>
-              </div>
-              <div class="tier-card-byo">
-                <div class="byo-icon">🎁</div>
-                <div class="byo-heading">Build Your Own Box</div>
-                <div class="byo-sub">Want something truly unique? Select your own custom items to create a personalized gift box tailored perfectly to their tastes.</div>
-                <div class="byo-note"><i class="fas fa-triangle-exclamation"></i> All orders require an advance payment, as each box is made to order.</div>
-                <a href="https://wa.me/212783552622" class="byo-btn" target="_blank" style="margin-top:auto;">✦ CUSTOMIZE YOUR OWN</a>
+                <a href="custom.html" class="byo-btn" style="margin-top:auto;">✦ CUSTOMIZE YOUR OWN</a>
               </div>
             </div>
           </div>
 
           <!-- Female Friend -->
-          <div class="person-section reveal">
+          <div class="person-section reveal" data-gender="her">
             <div class="person-heading">Female Friend</div>
             <div class="tier-labels">
               <div class="tier-label-btn standard">Standard</div>
@@ -1442,7 +1444,7 @@
             </div>
             <div class="tier-row">
               <div class="tier-card" data-name="Female Friend — Standard" data-price="200">
-                <div class="tier-card-img"><div class="img-placeholder"><i class="fas fa-box"></i></div></div>
+                <div class="tier-card-img"><img src="assets/female-standard.png" alt="Female Friend Standard"></div>
                 <div class="tier-card-body">
                   <span class="tier-badge standard">Standard</span>
                   <div class="tier-card-desc">A thoughtfully curated gift for your friend.</div>
@@ -1451,7 +1453,7 @@
                 </div>
               </div>
               <div class="tier-card" data-name="Female Friend — Premium" data-price="400">
-                <div class="tier-card-img"><div class="img-placeholder"><i class="fas fa-box"></i></div></div>
+                <div class="tier-card-img"><img src="assets/female-premium.png" alt="Female Friend Premium"></div>
                 <div class="tier-card-body">
                   <span class="tier-badge premium">Premium</span>
                   <div class="tier-card-desc">A luxurious gift experience for your friend.</div>
@@ -1464,12 +1466,12 @@
                 <div class="byo-heading">Build Your Own Box</div>
                 <div class="byo-sub">Want something truly unique? Select your own custom items to create a personalized gift box tailored perfectly to their tastes.</div>
                 <div class="byo-note"><i class="fas fa-triangle-exclamation"></i> All orders require an advance payment, as each box is made to order.</div>
-                <a href="https://wa.me/212783552622" class="byo-btn" target="_blank" style="margin-top:auto;">✦ CUSTOMIZE YOUR OWN</a>
+                <a href="custom.html" class="byo-btn" style="margin-top:auto;">✦ CUSTOMIZE YOUR OWN</a>
               </div>
             </div>
           </div>
 
-        </div><!-- /FOR HER -->
+        </div><!-- /catalogAll -->
 
         <!-- Build your own -->
         <div class="byo-section reveal">
@@ -1478,7 +1480,7 @@
             <div class="byo-title">Can't find the perfect box?<br>Build your own.</div>
             <div class="byo-desc">Tell us your ideas and we'll craft something truly unique.</div>
           </div>
-          <a href="https://wa.me/212783552622" class="byo-btn" target="_blank">Start Customizing →</a>
+          <a href="custom.html" class="byo-btn">Start Customizing →</a>
         </div>
 
       </div><!-- /.catalog-inner -->
@@ -1496,22 +1498,22 @@
           </div>
           <div class="faq-accordion reveal-group" id="faqAccordion">
             <div class="faq-item">
-              <button class="faq-trigger" type="button" aria-expanded="false">
+              <div class="faq-trigger">
                 <span class="faq-question">What is the estimated delivery date?</span>
                 <span class="faq-icon"><i class="fas fa-plus"></i></span>
-              </button>
+              </div>
               <div class="faq-panel">
                 <div class="faq-panel-inner">
                   <p>You choose the delivery date.</p>
-                  <p>Please order at least 2 days in advance.</p>
+                  <p>Please order at least 3 days in advance.</p>
                 </div>
               </div>
             </div>
             <div class="faq-item">
-              <button class="faq-trigger" type="button" aria-expanded="false">
+              <div class="faq-trigger">
                 <span class="faq-question">Where can I pay the advance payment?</span>
                 <span class="faq-icon"><i class="fas fa-plus"></i></span>
-              </button>
+              </div>
               <div class="faq-panel">
                 <div class="faq-panel-inner">
                   <p>Custom orders require an advance payment.</p>
@@ -1520,13 +1522,35 @@
               </div>
             </div>
             <div class="faq-item">
-              <button class="faq-trigger" type="button" aria-expanded="false">
+              <div class="faq-trigger">
                 <span class="faq-question">Can I customize my own gift?</span>
                 <span class="faq-icon"><i class="fas fa-plus"></i></span>
-              </button>
+              </div>
               <div class="faq-panel">
                 <div class="faq-panel-inner">
-                  <p>Yes — submit the order form with your custom items and confirm on WhatsApp.</p>
+                  <p>Yes — use the "Build Your Own Box" option to pick your items and send your request on WhatsApp.</p>
+                </div>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-trigger">
+                <span class="faq-question">Do you deliver across Morocco?</span>
+                <span class="faq-icon"><i class="fas fa-plus"></i></span>
+              </div>
+              <div class="faq-panel">
+                <div class="faq-panel-inner">
+                  <p>Yes — we deliver to all major cities including Casablanca, Rabat, Marrakech, Fes, Tangier, Agadir, and more.</p>
+                </div>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-trigger">
+                <span class="faq-question">Can I include a personal message with the gift?</span>
+                <span class="faq-icon"><i class="fas fa-plus"></i></span>
+              </div>
+              <div class="faq-panel">
+                <div class="faq-panel-inner">
+                  <p>Absolutely. Every order includes a personal card field in the order form where you can write a custom message for the recipient.</p>
                 </div>
               </div>
             </div>
@@ -1654,98 +1678,95 @@
   <div id="orderModalOverlay" aria-hidden="true">
     <div class="order-modal" role="dialog" aria-modal="true" aria-label="Order form">
       <div class="order-modal-header">
-        <button class="order-modal-close" type="button" id="orderModalCloseBtn" aria-label="Close order form"><i class="fas fa-times"></i></button>
-        <div class="order-header-titles">
-          <div class="order-header-title">Confirm <span>Order</span></div>
-          <div class="order-header-subtitle">Complete the details below, then confirm on WhatsApp.</div>
-        </div>
-        <div class="order-summary-strip">
-          <div class="order-summary-icon" aria-hidden="true"><i class="fas fa-gift"></i></div>
-          <div class="order-summary-main">
-            <div class="order-summary-title" id="orderSummaryGift">Selected Gift</div>
-            <div class="order-summary-meta" id="orderSummaryMeta">—</div>
-          </div>
-          <div class="order-summary-price" id="orderSummaryPrice">—</div>
-        </div>
+        <button class="order-modal-close" type="button" id="orderModalCloseBtn" aria-label="Close"><i class="fas fa-times"></i></button>
+        <div class="order-header-title">Confirm <span>Order</span></div>
+        <div class="order-header-subtitle">Complete the details below, then confirm on WhatsApp.</div>
       </div>
       <div class="order-modal-body">
-        <h2>Order details</h2>
-        <div class="order-subtitle">We'll format everything into a WhatsApp message for you.</div>
+        <!-- Cart items summary -->
+        <div class="order-section-title">Your Order</div>
+        <div id="orderCartSummary" class="order-cart-summary"></div>
+        <div class="order-price-summary">
+          <div class="order-price-row"><span>Subtotal</span><span id="orderSubtotal">0 DH</span></div>
+          <div class="order-price-row"><span>Delivery</span><span>30 DH</span></div>
+          <div class="order-price-divider"></div>
+          <div class="order-price-row total"><span>Total</span><span id="orderTotal">0 DH</span></div>
+        </div>
+        <div class="order-section-divider"></div>
         <form id="orderForm">
+          <!-- Contact -->
           <div class="order-section-title">Contact</div>
           <div class="order-grid">
             <div class="order-field">
-              <label class="order-label" for="fullName">Full Name *</label>
-              <input class="order-input" id="fullName" name="fullName" type="text" required autocomplete="name" />
+              <label class="order-label" for="fullName">Full Name <span class="req">*</span></label>
+              <input class="order-input" id="fullName" type="text" placeholder="Your full name" />
+              <span class="order-error" id="err-fullName"></span>
             </div>
             <div class="order-field">
-              <label class="order-label" for="phone">Phone *</label>
-              <input class="order-input" id="phone" name="phone" type="tel" required autocomplete="tel" />
+              <label class="order-label" for="phone">Phone <span class="req">*</span></label>
+              <input class="order-input" id="phone" type="tel" placeholder="+212 6XX XXX XXX" />
+              <span class="order-error" id="err-phone"></span>
             </div>
             <div class="order-field full">
               <label class="order-label" for="email">Email (optional)</label>
-              <input class="order-input" id="email" name="email" type="email" autocomplete="email" />
+              <input class="order-input" id="email" type="email" placeholder="your@email.com" />
             </div>
           </div>
           <div class="order-section-divider"></div>
+          <!-- Delivery -->
           <div class="order-section-title">Delivery</div>
           <div class="order-grid">
             <div class="order-field">
-              <label class="order-label" for="recipientName">Recipient Name *</label>
-              <input class="order-input" id="recipientName" name="recipientName" type="text" required />
+              <label class="order-label" for="recipientName">Recipient Name <span class="req">*</span></label>
+              <input class="order-input" id="recipientName" type="text" placeholder="Who receives the gift?" />
+              <span class="order-error" id="err-recipientName"></span>
             </div>
             <div class="order-field">
-              <label class="order-label" for="recipientPhone">Recipient Phone *</label>
-              <input class="order-input" id="recipientPhone" name="recipientPhone" type="tel" required />
+              <label class="order-label" for="recipientPhone">Recipient Phone <span class="req">*</span></label>
+              <input class="order-input" id="recipientPhone" type="tel" placeholder="+212 6XX XXX XXX" />
+              <span class="order-error" id="err-recipientPhone"></span>
             </div>
             <div class="order-field">
-              <label class="order-label" for="city">City *</label>
-              <input class="order-input" id="city" name="city" type="text" required />
+              <label class="order-label" for="city">City <span class="req">*</span></label>
+              <select class="order-select" id="city">
+                <option value="">Select city</option>
+                <option>Casablanca</option><option>Rabat</option><option>Marrakech</option>
+                <option>Fes</option><option>Tangier</option><option>Agadir</option>
+                <option>Meknes</option><option>Oujda</option><option>Kenitra</option>
+                <option>Tetouan</option><option>Salé</option><option>Nador</option>
+                <option>Mohammedia</option><option>El Jadida</option><option>Beni Mellal</option>
+                <option>Khouribga</option><option>Other</option>
+              </select>
+              <span class="order-error" id="err-city"></span>
             </div>
             <div class="order-field">
-              <label class="order-label" for="deliveryDate">Delivery Date *</label>
-              <input class="order-input" id="deliveryDate" name="deliveryDate" type="date" required />
+              <label class="order-label" for="deliveryDate">Delivery Date <span class="req">*</span></label>
+              <input class="order-input" id="deliveryDate" type="date" />
+              <span class="order-error" id="err-deliveryDate"></span>
             </div>
             <div class="order-field full">
-              <label class="order-label" for="address">Exact Address *</label>
-              <input class="order-input" id="address" name="address" type="text" required />
+              <label class="order-label" for="address">Exact Address <span class="req">*</span></label>
+              <textarea class="order-textarea" id="address" placeholder="Street, building, apartment..."></textarea>
+              <span class="order-error" id="err-address"></span>
             </div>
             <div class="order-field full">
               <label class="order-label" for="preferredTime">Preferred Time (optional)</label>
-              <input class="order-input" id="preferredTime" name="preferredTime" type="text" placeholder="e.g. 3pm - 6pm" />
+              <input class="order-input" id="preferredTime" type="text" placeholder="e.g. Morning, 2–4 PM" />
             </div>
           </div>
           <div class="order-section-divider"></div>
-          <div class="order-section-title">Gift details</div>
+          <!-- Gift details -->
+          <div class="order-section-title">Gift Details</div>
           <div class="order-grid">
-            <div class="order-field">
-              <label class="order-label" for="genderSelect">Gender *</label>
-              <select class="order-select" id="genderSelect" name="gender" required>
-                <option value="">Select</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
-            </div>
-            <div class="order-field">
-              <label class="order-label" for="relationSelect">Relation *</label>
-              <select class="order-select" id="relationSelect" name="relation" required>
-                <option value="">Select</option>
-                <option value="parents">Parents</option>
-                <option value="partner">Partner</option>
-                <option value="friend">Friend</option>
-                <option value="sibling">Sibling</option>
-                <option value="kids">Kids</option>
-              </select>
-            </div>
             <div class="order-field full">
-              <label class="order-label" for="specialMessage">Special Message (optional)</label>
-              <textarea class="order-textarea" id="specialMessage" name="specialMessage" placeholder="Add a personal message to the gift..."></textarea>
+              <label class="order-label" for="giftMessage">Personal Message (optional)</label>
+              <textarea class="order-textarea" id="giftMessage" placeholder="Write a personal message for the recipient..."></textarea>
             </div>
           </div>
         </form>
       </div>
       <div class="order-modal-footer">
-        <button class="btn-submit" id="orderSubmitBtn" type="button"><i class="fab fa-whatsapp"></i> Send Order on WhatsApp</button>
+        <button class="order-submit-btn" id="orderSubmitBtn" type="button"><i class="fab fa-whatsapp"></i> Confirm Order on WhatsApp</button>
       </div>
     </div>
   </div>
@@ -1753,8 +1774,12 @@
   <script>
     // --- Navbar Scroll Effect ---
     const navbar = document.getElementById('navbar');
+    let lastScrollY = 0;
     window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 60);
+      const y = window.scrollY;
+      navbar.classList.toggle('scrolled', y > 60);
+      navbar.style.transform = y > lastScrollY && y > 80 ? 'translateY(-100%)' : 'translateY(0)';
+      lastScrollY = y;
     });
 
     // --- Mobile Menu Toggle ---
@@ -1775,33 +1800,19 @@
       });
     });
 
-    // --- FAQ Accordion ---
-    document.querySelectorAll('.faq-trigger').forEach(trigger => {
-      trigger.addEventListener('click', () => {
-        const isOpen = trigger.getAttribute('aria-expanded') === 'true';
-        document.querySelectorAll('.faq-trigger').forEach(t => {
-          t.setAttribute('aria-expanded', 'false');
-          t.nextElementSibling.style.maxHeight = null;
-        });
-        if (!isOpen) {
-          trigger.setAttribute('aria-expanded', 'true');
-          const panel = trigger.nextElementSibling;
-          panel.style.maxHeight = panel.scrollHeight + 'px';
-        }
-      });
-    });
 
     // --- Catalog Tab Switching ---
+    document.querySelectorAll('#catalogAll .person-section[data-gender="him"]').forEach(s => s.classList.add('hidden'));
     document.querySelectorAll('#catalog-tabs .tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('#catalog-tabs .tab-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const group = btn.dataset.group;
-        document.querySelectorAll('.catalog-group').forEach(g => {
-          if (group === 'all' || g.dataset.gender === group) {
-            g.classList.add('visible');
+        document.querySelectorAll('#catalogAll .person-section').forEach(s => {
+          if (group === 'all' || s.dataset.gender === group) {
+            s.classList.remove('hidden');
           } else {
-            g.classList.remove('visible');
+            s.classList.add('hidden');
           }
         });
       });
@@ -1921,9 +1932,8 @@
 
     cartCheckout.addEventListener('click', () => {
       if (!cart.length) return;
-      const msg = cart.map(i => `• ${i.name} (${i.badge}) x${i.qty} — ${i.price * i.qty} MAD`).join('\n');
-      const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-      window.open(`https://wa.me/212783552622?text=${encodeURIComponent(`Hello, I'd like to order:\n\n${msg}\n\nTotal: ${total} MAD`)}`, '_blank');
+      closeCart();
+      openOrderModal();
     });
 
     updateCart();
@@ -1933,12 +1943,28 @@
     const orderModalCloseBtn = document.getElementById('orderModalCloseBtn');
     const orderSubmitBtn = document.getElementById('orderSubmitBtn');
 
-    function openOrderModal(gift) {
-      if (gift) {
-        document.getElementById('orderSummaryGift').textContent = gift.name || 'Gift Box';
-        document.getElementById('orderSummaryMeta').textContent = gift.meta || '—';
-        document.getElementById('orderSummaryPrice').textContent = gift.price ? gift.price + ' MAD' : '—';
-      }
+    function openOrderModal() {
+      // Set minimum delivery date to today + 3 days
+      const minDate = new Date();
+      minDate.setDate(minDate.getDate() + 3);
+      document.getElementById('deliveryDate').min = minDate.toISOString().split('T')[0];
+      // Populate cart summary
+      const summary = document.getElementById('orderCartSummary');
+      const subtotalEl = document.getElementById('orderSubtotal');
+      const totalEl = document.getElementById('orderTotal');
+      const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+      summary.innerHTML = cart.map(item => `
+        <div class="order-cart-item">
+          <div class="order-cart-item-icon"><i class="fas fa-gift"></i></div>
+          <div class="order-cart-item-info">
+            <div class="order-cart-item-name">${item.name}</div>
+            <div class="order-cart-item-sub">${item.badge || ''} × ${item.qty}</div>
+          </div>
+          <div class="order-cart-item-price">${item.price * item.qty} DH</div>
+        </div>
+      `).join('');
+      subtotalEl.textContent = subtotal + ' DH';
+      totalEl.textContent = (subtotal + 30) + ' DH';
       orderModalOverlay.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
     }
@@ -1953,21 +1979,65 @@
 
     if (orderSubmitBtn) {
       orderSubmitBtn.addEventListener('click', () => {
-        const form = document.getElementById('orderForm');
-        const name = document.getElementById('fullName').value;
-        const phone = document.getElementById('phone').value;
-        const recipient = document.getElementById('recipientName').value;
-        const city = document.getElementById('city').value;
-        const date = document.getElementById('deliveryDate').value;
-        const address = document.getElementById('address').value;
-        const msg = document.getElementById('specialMessage').value;
-        const gift = document.getElementById('orderSummaryGift').textContent;
-        const price = document.getElementById('orderSummaryPrice').textContent;
-        if (!name || !phone || !recipient || !city || !date || !address) {
-          alert('Please fill in all required fields.');
-          return;
-        }
-        const text = `Hello! I'd like to order:\n\nGift: ${gift} — ${price}\n\nCustomer: ${name} (${phone})\nRecipient: ${recipient}\nCity: ${city}\nAddress: ${address}\nDate: ${date}${msg ? `\nMessage: ${msg}` : ''}`;
+        const required = [
+          { id:'fullName',       err:'err-fullName',       label:'Full name' },
+          { id:'phone',          err:'err-phone',          label:'Your phone' },
+          { id:'recipientName',  err:'err-recipientName',  label:'Recipient name' },
+          { id:'recipientPhone', err:'err-recipientPhone', label:'Recipient phone' },
+          { id:'city',           err:'err-city',           label:'City' },
+          { id:'deliveryDate',   err:'err-deliveryDate',   label:'Delivery date', minDays:3 },
+          { id:'address',        err:'err-address',        label:'Address' },
+        ];
+        let valid = true;
+        required.forEach(f => {
+          const el = document.getElementById(f.id);
+          const errEl = document.getElementById(f.err);
+          el.classList.remove('error');
+          if (errEl) errEl.textContent = '';
+          if (!el.value.trim()) {
+            el.classList.add('error');
+            if (errEl) errEl.textContent = f.label + ' is required';
+            valid = false;
+          } else if (f.minDays) {
+            const minDate = new Date();
+            minDate.setDate(minDate.getDate() + f.minDays);
+            minDate.setHours(0,0,0,0);
+            if (new Date(el.value) < minDate) {
+              el.classList.add('error');
+              if (errEl) errEl.textContent = `Date must be at least ${f.minDays} days from today`;
+              valid = false;
+            }
+          }
+        });
+        if (!valid) return;
+
+        const fullName       = document.getElementById('fullName').value.trim();
+        const phone          = document.getElementById('phone').value.trim();
+        const email          = document.getElementById('email').value.trim();
+        const recipientName  = document.getElementById('recipientName').value.trim();
+        const recipientPhone = document.getElementById('recipientPhone').value.trim();
+        const city           = document.getElementById('city').value.trim();
+        const deliveryDate   = document.getElementById('deliveryDate').value;
+        const address        = document.getElementById('address').value.trim();
+        const preferredTime  = document.getElementById('preferredTime').value.trim();
+        const giftMessage    = document.getElementById('giftMessage').value.trim();
+
+        const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+        const total = subtotal + 30;
+        const itemsText = cart.map(i => `  • ${i.name}${i.badge ? ' (' + i.badge + ')' : ''} x${i.qty} — ${i.price * i.qty} DH`).join('\n');
+
+        let text = `Hello! I'd like to place an order on Cadeau Lik 🎁\n\n`;
+        text += `━━━ ORDER SUMMARY ━━━\n${itemsText}\n`;
+        text += `Subtotal: ${subtotal} DH\nDelivery: 30 DH\nTotal: ${total} DH\n\n`;
+        text += `━━━ CONTACT ━━━\n`;
+        text += `Name: ${fullName}\nPhone: ${phone}`;
+        if (email) text += `\nEmail: ${email}`;
+        text += `\n\n━━━ DELIVERY ━━━\n`;
+        text += `Recipient: ${recipientName} (${recipientPhone})\n`;
+        text += `City: ${city}\nDate: ${deliveryDate}\nAddress: ${address}`;
+        if (preferredTime) text += `\nTime: ${preferredTime}`;
+        if (giftMessage) text += `\n\n━━━ GIFT MESSAGE ━━━\n"${giftMessage}"`;
+
         window.open(`https://wa.me/212783552622?text=${encodeURIComponent(text)}`, '_blank');
         closeOrderModal();
       });

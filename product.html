@@ -18,7 +18,7 @@
     }
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
     html{scroll-behavior:smooth;}
-    body{background:var(--bg);color:var(--text-main);font-family:var(--font-body);line-height:1.6;-webkit-font-smoothing:antialiased;}
+    body{background:radial-gradient(ellipse 70% 60% at 50% 50%, #2a2a2a 0%, #111 45%, #000 100%) fixed;color:var(--text-main);font-family:var(--font-body);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;}
     h1,h2,h3,h4{font-family:var(--font-heading);font-weight:600;}
     a{text-decoration:none;color:inherit;}
 
@@ -64,14 +64,53 @@
     .prod-qty-num{font-size:1rem;font-weight:600;min-width:24px;text-align:center;}
     .prod-add-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;border-radius:10px;background:#fff;border:none;color:#000;font-family:var(--font-body);font-size:0.88rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s,transform 0.2s,box-shadow 0.2s;}
     .prod-add-btn:hover{opacity:0.9;transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,255,255,0.12);}
+    /* ORDER MODAL */
+    #orderModalOverlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);z-index:3000;display:none;align-items:stretch;justify-content:flex-end;}
+    #orderModalOverlay[aria-hidden="false"]{display:flex;}
+    .order-modal{background:#fff;border:none;border-radius:0;width:100%;max-width:480px;max-height:100vh;overflow-y:auto;box-shadow:-4px 0 30px rgba(0,0,0,0.18);}
+    .order-modal-header{padding:20px 20px 16px;border-bottom:1px solid #e5e5e5;display:flex;align-items:center;justify-content:space-between;}
+    .order-modal-close{background:none;border:none;color:#111;font-size:1.1rem;cursor:pointer;transition:opacity 0.2s;padding:4px;}
+    .order-modal-close:hover{opacity:0.5;}
+    .order-header-title{font-family:var(--font-body);font-size:1rem;font-weight:700;color:#111;letter-spacing:0.5px;text-transform:uppercase;}
+    .order-header-title span{color:#111;}
+    .order-header-subtitle{display:none;}
+    .order-modal-body{padding:0 20px 20px;}
+    .order-section-title{font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:#999;font-weight:600;margin:20px 0 10px;}
+    .order-section-divider{height:1px;background:#e5e5e5;margin:20px 0;}
+    .order-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .order-field{display:flex;flex-direction:column;gap:5px;}
+    .order-field.full{grid-column:1/-1;}
+    .order-label{font-size:0.72rem;color:#555;letter-spacing:0.3px;font-weight:500;}
+    .order-input,.order-select,.order-textarea{background:#fff;border:1.5px solid #ddd;border-radius:8px;color:#111;font-family:var(--font-body);font-size:0.88rem;padding:10px 12px;transition:border-color 0.2s;width:100%;}
+    .order-input:focus,.order-select:focus,.order-textarea:focus{outline:none;border-color:#111;}
+    .order-textarea{resize:vertical;min-height:80px;}
+    .order-select option{background:#fff;color:#111;}
+    .order-modal-footer{padding:0 20px 24px;}
+    .req{color:#c00;}
+    .order-error{font-size:0.7rem;color:#c00;min-height:13px;}
+    .order-cart-summary{display:flex;flex-direction:column;margin-bottom:0;}
+    .order-cart-item{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid #e5e5e5;}
+    .order-cart-item-icon{font-size:2rem;flex-shrink:0;line-height:1;}
+    .order-cart-item-info{flex:1;}
+    .order-cart-item-name{font-size:0.9rem;font-weight:700;color:#111;line-height:1.3;}
+    .order-cart-item-sub{font-size:0.8rem;color:#777;margin-top:2px;}
+    .order-cart-item-price{font-size:0.9rem;font-weight:700;color:#111;white-space:nowrap;padding-top:2px;}
+    .order-price-summary{padding:16px 0 0;}
+    .order-price-row{display:flex;justify-content:space-between;font-size:0.88rem;color:#555;padding:4px 0;}
+    .order-price-row.total{font-weight:700;font-size:1rem;color:#111;padding-top:10px;border-top:1px solid #e5e5e5;margin-top:6px;}
+    .order-price-row.total span:last-child{color:#111;}
+    .order-price-divider{display:none;}
+    .order-submit-btn{width:100%;padding:15px;border:none;border-radius:8px;background:#25D366;color:#fff;font-size:0.88rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity 0.2s;font-family:var(--font-body);}
+    .order-submit-btn:hover{opacity:0.9;}
+    .order-input.error,.order-select.error,.order-textarea.error{border-color:#c00 !important;}
 
     /* YOU MAY ALSO LIKE */
-    .ymal-section{padding:80px 5%;background:#111;}
+    .ymal-section{padding:80px 5%;background:transparent;}
     .ymal-header{text-align:center;margin-bottom:48px;}
     .ymal-title{font-family:var(--font-heading);font-size:clamp(1.8rem,3vw,2.5rem);color:var(--text-main);}
     .ymal-title em{color:var(--gold);font-style:italic;}
     .ymal-wrapper{position:relative;}
-    .ymal-track{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:8px;}
+    .ymal-track{display:flex;gap:24px;overflow-x:auto;scrollbar-width:none;padding-bottom:8px;}
     .ymal-track::-webkit-scrollbar{display:none;}
     .ymal-card{flex:0 0 260px;scroll-snap-align:start;background:#1a1a1a;border-radius:14px;overflow:hidden;border:1px solid var(--glass-border);transition:transform 0.25s,box-shadow 0.25s,border-color 0.25s;}
     .ymal-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(0,0,0,0.5);border-color:rgba(212,175,55,0.4);}
@@ -299,37 +338,147 @@
     document.getElementById('prodQtyPlus').addEventListener('click', ()=>{ if(qty<10){qty++;document.getElementById('prodQtyNum').textContent=qty;} });
 
     const ALL_PRODUCTS = [
-      {name:'Father — Standard',tier:'standard',price:200,image:'assets/father-standard.png',relation:'father',gender:'him'},
-      {name:'Father — Premium', tier:'premium', price:400,image:'assets/father-premium.png', relation:'father',gender:'him'},
-      {name:'Husband — Standard',tier:'standard',price:200,image:'assets/husband-standard.png',relation:'husband',gender:'him'},
-      {name:'Husband — Premium', tier:'premium', price:400,image:'assets/husband-premium.png', relation:'husband',gender:'him'},
-      {name:'Friend — Standard', tier:'standard',price:200,image:'assets/friend-standard.png', relation:'friend',gender:'him'},
-      {name:'Friend — Premium',  tier:'premium', price:400,image:'assets/friend-premium.png',  relation:'friend',gender:'him'},
-      {name:'Mother — Standard', tier:'standard',price:200,image:'assets/father-standard.png', relation:'mother',gender:'her'},
-      {name:'Mother — Premium',  tier:'premium', price:400,image:'assets/father-premium.png',  relation:'mother',gender:'her'},
-      {name:'Wife — Standard',   tier:'standard',price:200,image:'assets/husband-standard.png',relation:'wife',  gender:'her'},
-      {name:'Wife — Premium',    tier:'premium', price:400,image:'assets/husband-premium.png', relation:'wife',  gender:'her'},
-      {name:'Friend — Standard (Her)',tier:'standard',price:200,image:'assets/friend-standard.png',relation:'friend',gender:'her'},
-      {name:'Friend — Premium (Her)', tier:'premium', price:400,image:'assets/friend-premium.png', relation:'friend',gender:'her'},
+      {name:'Wife/Girlfriend — Standard',   tier:'standard',price:200,image:'assets/wife-standard.png',   relation:'wife',   gender:'her'},
+      {name:'Wife/Girlfriend — Premium',    tier:'premium', price:400,image:'assets/wife-premium.png',    relation:'wife',   gender:'her'},
+      {name:'Husband/Boyfriend — Standard', tier:'standard',price:200,image:'assets/husband-standard.png',relation:'husband',gender:'him'},
+      {name:'Husband/Boyfriend — Premium',  tier:'premium', price:400,image:'assets/husband-premium.png', relation:'husband',gender:'him'},
+      {name:'Mother — Standard',            tier:'standard',price:200,image:'assets/mother-standard.png', relation:'mother', gender:'her'},
+      {name:'Mother — Premium',             tier:'premium', price:400,image:'assets/mother-premium.png',  relation:'mother', gender:'her'},
+      {name:'Father — Standard',            tier:'standard',price:200,image:'assets/father-standard.png', relation:'father', gender:'him'},
+      {name:'Father — Premium',             tier:'premium', price:400,image:'assets/father-premium.png',  relation:'father', gender:'him'},
+      {name:'Male Friend — Standard',       tier:'standard',price:200,image:'assets/friend-standard.png', relation:'friend', gender:'him'},
+      {name:'Male Friend — Premium',        tier:'premium', price:400,image:'assets/friend-premium.png',  relation:'friend', gender:'him'},
+      {name:'Female Friend — Standard',     tier:'standard',price:200,image:'assets/female-standard.png', relation:'friend', gender:'her'},
+      {name:'Female Friend — Premium',      tier:'premium', price:400,image:'assets/female-premium.png',  relation:'friend', gender:'her'},
     ];
 
-    document.getElementById('ymalTrack').innerHTML = ALL_PRODUCTS
-      .filter(p => p.gender===gender && p.name!==name)
-      .map(p => {
-        const url=`product.html?name=${encodeURIComponent(p.name)}&tier=${p.tier}&price=${p.price}&image=${encodeURIComponent(p.image)}&relation=${p.relation}&gender=${p.gender}`;
-        return `<div class="ymal-card">
-          <div class="ymal-card-img"><img src="${p.image}" alt="${p.name}" onerror="this.parentElement.innerHTML='<div style=font-size:3rem;color:#d4af37>🎁</div>'"></div>
-          <div class="ymal-card-body">
-            <span class="ymal-card-badge ${p.tier}">${p.tier.charAt(0).toUpperCase()+p.tier.slice(1)}</span>
-            <div class="ymal-card-name">${p.name}</div>
-            <div class="ymal-card-price">${p.price} <span style="font-size:0.7rem;color:var(--text-muted)">DH</span></div>
-            <a class="ymal-view-btn" href="${url}"><i class="fas fa-eye"></i> View Details</a>
-          </div></div>`;
-      }).join('');
+    const track = document.getElementById('ymalTrack');
+    const ymalProducts = ALL_PRODUCTS.filter(p => p.name !== name);
+    const cardHTML = p => {
+      const url=`product.html?name=${encodeURIComponent(p.name)}&tier=${p.tier}&price=${p.price}&image=${encodeURIComponent(p.image)}&relation=${p.relation}&gender=${p.gender}`;
+      return `<div class="ymal-card">
+        <div class="ymal-card-img"><img src="${p.image}" alt="${p.name}" onerror="this.parentElement.innerHTML='<div style=font-size:3rem;color:#d4af37>🎁</div>'"></div>
+        <div class="ymal-card-body">
+          <span class="ymal-card-badge ${p.tier}">${p.tier.charAt(0).toUpperCase()+p.tier.slice(1)}</span>
+          <div class="ymal-card-name">${p.name}</div>
+          <div class="ymal-card-price">${p.price} <span style="font-size:0.7rem;color:var(--text-muted)">DH</span></div>
+          <a class="ymal-view-btn" href="${url}"><i class="fas fa-eye"></i> View Details</a>
+        </div></div>`;
+    };
+    track.innerHTML = ymalProducts.map(cardHTML).join('');
 
-    document.getElementById('ymalLeft').addEventListener('click',  ()=>document.getElementById('ymalTrack').scrollBy({left:-284,behavior:'smooth'}));
-    document.getElementById('ymalRight').addEventListener('click', ()=>document.getElementById('ymalTrack').scrollBy({left:284,behavior:'smooth'}));
+    // Drag to scroll
+    let isDragging = false, startX, scrollStart;
+    track.addEventListener('mousedown', e => {
+      isDragging = true; startX = e.pageX; scrollStart = track.scrollLeft;
+      track.style.cursor = 'grabbing'; track.style.userSelect = 'none';
+    });
+    window.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      track.scrollLeft = scrollStart - (e.pageX - startX);
+    });
+    window.addEventListener('mouseup', () => {
+      isDragging = false; track.style.cursor = 'grab'; track.style.userSelect = '';
+    });
+    track.style.cursor = 'grab';
+
+    const CARD_W = 284;
+    document.getElementById('ymalLeft').addEventListener('click',  () => track.scrollBy({left:-CARD_W, behavior:'smooth'}));
+    document.getElementById('ymalRight').addEventListener('click', () => track.scrollBy({left: CARD_W, behavior:'smooth'}));
   </script>
+
+  <!-- ORDER MODAL -->
+  <div id="orderModalOverlay" aria-hidden="true">
+    <div class="order-modal" role="dialog" aria-modal="true">
+      <div class="order-modal-header">
+        <button class="order-modal-close" type="button" id="orderModalCloseBtn"><i class="fas fa-times"></i></button>
+        <div class="order-header-title">Confirm <span>Order</span></div>
+        <div class="order-header-subtitle">Complete the details below, then confirm on WhatsApp.</div>
+      </div>
+      <div class="order-modal-body">
+        <div class="order-section-title">Your Order</div>
+        <div id="orderCartSummary" class="order-cart-summary"></div>
+        <div class="order-price-summary">
+          <div class="order-price-row"><span>Subtotal</span><span id="orderSubtotal">0 DH</span></div>
+          <div class="order-price-row"><span>Delivery</span><span>30 DH</span></div>
+          <div class="order-price-divider"></div>
+          <div class="order-price-row total"><span>Total</span><span id="orderTotal">0 DH</span></div>
+        </div>
+        <div class="order-section-divider"></div>
+        <form id="orderForm">
+          <div class="order-section-title">Contact</div>
+          <div class="order-grid">
+            <div class="order-field">
+              <label class="order-label" for="fullName">Full Name <span class="req">*</span></label>
+              <input class="order-input" id="fullName" type="text" placeholder="Your full name" />
+              <span class="order-error" id="err-fullName"></span>
+            </div>
+            <div class="order-field">
+              <label class="order-label" for="phone">Phone <span class="req">*</span></label>
+              <input class="order-input" id="phone" type="tel" placeholder="+212 6XX XXX XXX" />
+              <span class="order-error" id="err-phone"></span>
+            </div>
+            <div class="order-field full">
+              <label class="order-label" for="email">Email (optional)</label>
+              <input class="order-input" id="email" type="email" placeholder="your@email.com" />
+            </div>
+          </div>
+          <div class="order-section-divider"></div>
+          <div class="order-section-title">Delivery</div>
+          <div class="order-grid">
+            <div class="order-field">
+              <label class="order-label" for="recipientName">Recipient Name <span class="req">*</span></label>
+              <input class="order-input" id="recipientName" type="text" placeholder="Who receives the gift?" />
+              <span class="order-error" id="err-recipientName"></span>
+            </div>
+            <div class="order-field">
+              <label class="order-label" for="recipientPhone">Recipient Phone <span class="req">*</span></label>
+              <input class="order-input" id="recipientPhone" type="tel" placeholder="+212 6XX XXX XXX" />
+              <span class="order-error" id="err-recipientPhone"></span>
+            </div>
+            <div class="order-field">
+              <label class="order-label" for="city">City <span class="req">*</span></label>
+              <select class="order-select" id="city">
+                <option value="">Select city</option>
+                <option>Casablanca</option><option>Rabat</option><option>Marrakech</option>
+                <option>Fes</option><option>Tangier</option><option>Agadir</option>
+                <option>Meknes</option><option>Oujda</option><option>Kenitra</option>
+                <option>Tetouan</option><option>Salé</option><option>Nador</option>
+                <option>Mohammedia</option><option>El Jadida</option><option>Beni Mellal</option>
+                <option>Khouribga</option><option>Other</option>
+              </select>
+              <span class="order-error" id="err-city"></span>
+            </div>
+            <div class="order-field">
+              <label class="order-label" for="deliveryDate">Delivery Date <span class="req">*</span></label>
+              <input class="order-input" id="deliveryDate" type="date" />
+              <span class="order-error" id="err-deliveryDate"></span>
+            </div>
+            <div class="order-field full">
+              <label class="order-label" for="address">Exact Address <span class="req">*</span></label>
+              <textarea class="order-textarea" id="address" placeholder="Street, building, apartment..."></textarea>
+              <span class="order-error" id="err-address"></span>
+            </div>
+            <div class="order-field full">
+              <label class="order-label" for="preferredTime">Preferred Time (optional)</label>
+              <input class="order-input" id="preferredTime" type="text" placeholder="e.g. Morning, 2–4 PM" />
+            </div>
+          </div>
+          <div class="order-section-divider"></div>
+          <div class="order-section-title">Gift Details</div>
+          <div class="order-grid">
+            <div class="order-field full">
+              <label class="order-label" for="giftMessage">Personal Message (optional)</label>
+              <textarea class="order-textarea" id="giftMessage" placeholder="Write a personal message for the recipient..."></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="order-modal-footer">
+        <button class="order-submit-btn" id="orderSubmitBtn" type="button"><i class="fab fa-whatsapp"></i> Confirm Order on WhatsApp</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     const CART_KEY = 'cadeauLikCart';
@@ -368,9 +517,8 @@
     document.getElementById('prodCartToggle').addEventListener('click',openCart);
     document.getElementById('cartCheckout').addEventListener('click',()=>{
       if(!cart.length)return;
-      const msg=cart.map(i=>`• ${i.name} x${i.qty} — ${i.price*i.qty} DH`).join('\n');
-      const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
-      window.open(`https://wa.me/212783552622?text=${encodeURIComponent(`Hello, I'd like to order:\n\n${msg}\n\nTotal: ${total} DH`)}`, '_blank');
+      closeCart();
+      openOrderModal();
     });
     document.getElementById('prodAddBtn').addEventListener('click',()=>{
       const existing=cart.find(i=>i.name===name);
@@ -379,6 +527,85 @@
       saveCart(); updateCartUI(); openCart();
     });
     updateCartUI();
+
+    // --- Order Modal ---
+    const orderModalOverlay = document.getElementById('orderModalOverlay');
+    document.getElementById('orderModalCloseBtn').addEventListener('click', closeOrderModal);
+    orderModalOverlay.addEventListener('click', e => { if(e.target===orderModalOverlay) closeOrderModal(); });
+
+    function openOrderModal() {
+      const minDate = new Date();
+      minDate.setDate(minDate.getDate() + 3);
+      document.getElementById('deliveryDate').min = minDate.toISOString().split('T')[0];
+      const summary = document.getElementById('orderCartSummary');
+      const subtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
+      summary.innerHTML = cart.map(item=>`
+        <div class="order-cart-item">
+          <div class="order-cart-item-icon"><i class="fas fa-gift"></i></div>
+          <div class="order-cart-item-info">
+            <div class="order-cart-item-name">${item.name}</div>
+            <div class="order-cart-item-sub">${item.badge||''} × ${item.qty}</div>
+          </div>
+          <div class="order-cart-item-price">${item.price*item.qty} DH</div>
+        </div>
+      `).join('');
+      document.getElementById('orderSubtotal').textContent = subtotal+' DH';
+      document.getElementById('orderTotal').textContent = (subtotal+30)+' DH';
+      orderModalOverlay.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
+    }
+    function closeOrderModal() {
+      orderModalOverlay.setAttribute('aria-hidden','true');
+      document.body.style.overflow='';
+    }
+
+    document.getElementById('orderSubmitBtn').addEventListener('click',()=>{
+      const required=[
+        {id:'fullName',err:'err-fullName',label:'Full name'},
+        {id:'phone',err:'err-phone',label:'Your phone'},
+        {id:'recipientName',err:'err-recipientName',label:'Recipient name'},
+        {id:'recipientPhone',err:'err-recipientPhone',label:'Recipient phone'},
+        {id:'city',err:'err-city',label:'City'},
+        {id:'deliveryDate',err:'err-deliveryDate',label:'Delivery date',minDays:3},
+        {id:'address',err:'err-address',label:'Address'},
+      ];
+      let valid=true;
+      required.forEach(f=>{
+        const el=document.getElementById(f.id);
+        const errEl=document.getElementById(f.err);
+        el.classList.remove('error');
+        if(errEl) errEl.textContent='';
+        if(!el.value.trim()){ el.classList.add('error'); if(errEl) errEl.textContent=f.label+' is required'; valid=false; }
+        else if(f.minDays){
+          const minD=new Date(); minD.setDate(minD.getDate()+f.minDays); minD.setHours(0,0,0,0);
+          if(new Date(el.value)<minD){ el.classList.add('error'); if(errEl) errEl.textContent=`Date must be at least ${f.minDays} days from today`; valid=false; }
+        }
+      });
+      if(!valid) return;
+      const fullName=document.getElementById('fullName').value.trim();
+      const phone=document.getElementById('phone').value.trim();
+      const email=document.getElementById('email').value.trim();
+      const recipientName=document.getElementById('recipientName').value.trim();
+      const recipientPhone=document.getElementById('recipientPhone').value.trim();
+      const city=document.getElementById('city').value.trim();
+      const deliveryDate=document.getElementById('deliveryDate').value;
+      const address=document.getElementById('address').value.trim();
+      const preferredTime=document.getElementById('preferredTime').value.trim();
+      const giftMessage=document.getElementById('giftMessage').value.trim();
+      const subtotal=cart.reduce((s,i)=>s+i.price*i.qty,0);
+      const total=subtotal+30;
+      const itemsText=cart.map(i=>`  • ${i.name}${i.badge?' ('+i.badge+')':''} x${i.qty} — ${i.price*i.qty} DH`).join('\n');
+      let text=`Hello! I'd like to place an order on Cadeau Lik 🎁\n\n`;
+      text+=`━━━ ORDER SUMMARY ━━━\n${itemsText}\n`;
+      text+=`Subtotal: ${subtotal} DH\nDelivery: 30 DH\nTotal: ${total} DH\n\n`;
+      text+=`━━━ CONTACT ━━━\nName: ${fullName}\nPhone: ${phone}`;
+      if(email) text+=`\nEmail: ${email}`;
+      text+=`\n\n━━━ DELIVERY ━━━\nRecipient: ${recipientName} (${recipientPhone})\nCity: ${city}\nDate: ${deliveryDate}\nAddress: ${address}`;
+      if(preferredTime) text+=`\nTime: ${preferredTime}`;
+      if(giftMessage) text+=`\n\n━━━ GIFT MESSAGE ━━━\n"${giftMessage}"`;
+      window.open(`https://wa.me/212783552622?text=${encodeURIComponent(text)}`,'_blank');
+      closeOrderModal();
+    });
   </script>
 </body>
 </html>

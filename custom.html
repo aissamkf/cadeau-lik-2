@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CADEAU LIK | Build Your Own Box</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg:#111; --gold:#d4af37; --gold-light:#f1c750;
+      --card-bg:#1a1a1a; --card-border:rgba(212,175,55,0.18);
+      --text-main:#fcfcfc; --text-muted:rgba(255,255,255,0.5);
+      --font-heading:'Playfair Display',serif; --font-body:'Inter',sans-serif;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    body{background:var(--bg);color:var(--text-main);font-family:var(--font-body);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;}
+    a{text-decoration:none;color:inherit;}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:200;background:rgba(10,10,10,0.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--card-border);display:flex;align-items:center;justify-content:space-between;padding:15px 5%;}
+    .nav-back{font-size:0.8rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:8px;transition:opacity .2s;}
+    .nav-back:hover{opacity:.7;}
+    .nav-logo{font-family:var(--font-heading);font-size:1.1rem;letter-spacing:2px;position:absolute;left:50%;transform:translateX(-50%);}
+
+    /* PAGE */
+    .page{max-width:860px;margin:0 auto;padding:52px 5% 100px;}
+
+    /* HEADER */
+    .page-header{text-align:center;margin-bottom:48px;}
+    .page-header h1{font-family:var(--font-heading);font-size:clamp(2rem,5vw,2.8rem);line-height:1.2;margin-bottom:10px;}
+    .page-header h1 em{color:var(--gold);font-style:italic;}
+    .page-header p{font-size:.9rem;color:var(--text-muted);}
+
+    /* STEP LABELS */
+    .step-label{
+      display:flex;align-items:center;gap:12px;
+      font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);
+      margin-bottom:14px;
+    }
+    .step-num{
+      width:24px;height:24px;border-radius:50%;border:1px solid var(--gold);
+      display:flex;align-items:center;justify-content:center;
+      font-size:.7rem;font-weight:700;flex-shrink:0;
+    }
+    .step-line{flex:1;height:1px;background:rgba(212,175,55,.2);}
+
+    /* TEXTAREA */
+    .desc-field{margin-bottom:48px;}
+    .desc-textarea{
+      width:100%;background:#1a1a1a;border:1px solid var(--card-border);
+      border-radius:12px;color:var(--text-main);font-family:var(--font-body);
+      font-size:.9rem;padding:18px 20px;resize:vertical;min-height:130px;
+      transition:border-color .3s;line-height:1.7;
+    }
+    .desc-textarea:focus{outline:none;border-color:var(--gold);}
+    .desc-textarea::placeholder{color:var(--text-muted);}
+
+    /* NOTICE */
+    .notice{
+      display:flex;align-items:flex-start;gap:14px;
+      background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.28);
+      border-radius:12px;padding:16px 20px;margin-bottom:40px;font-size:.84rem;
+      color:var(--text-muted);line-height:1.6;
+    }
+    .notice i{color:var(--gold);font-size:1.1rem;flex-shrink:0;margin-top:2px;}
+    .notice strong{color:var(--text-main);}
+
+    /* BOX PREVIEW */
+    .box-preview{
+      background:#1a1a1a;border:1px solid var(--card-border);
+      border-radius:16px;padding:20px 24px;margin-bottom:40px;
+      min-height:90px;display:flex;align-items:flex-start;flex-wrap:wrap;gap:10px;
+    }
+    .box-empty{
+      width:100%;text-align:center;color:var(--text-muted);
+      font-size:.85rem;padding:16px 0;
+      display:flex;flex-direction:column;align-items:center;gap:8px;
+    }
+    .box-empty i{font-size:1.8rem;opacity:.3;}
+    .box-tag{
+      display:flex;align-items:center;gap:8px;
+      background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.35);
+      border-radius:6px;padding:6px 12px;font-size:.8rem;
+      animation:popIn .18s ease;
+    }
+    .box-tag-emoji{font-size:1rem;}
+    .box-tag-remove{
+      background:none;border:none;color:rgba(212,175,55,.6);
+      cursor:pointer;font-size:.85rem;padding:0;line-height:1;
+      transition:color .2s;
+    }
+    .box-tag-remove:hover{color:#e05;}
+    @keyframes popIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+
+    /* ITEMS GRID */
+    .items-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+      gap:16px;margin-bottom:48px;
+    }
+    .item-card{
+      background:#1a1a1a;border:1px solid var(--card-border);
+      border-radius:14px;overflow:hidden;
+      display:flex;flex-direction:column;
+      transition:border-color .25s,transform .25s,box-shadow .25s;
+      cursor:pointer;position:relative;
+    }
+    .item-card:hover{border-color:rgba(212,175,55,.55);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.4);}
+    .item-card.in-box{border-color:var(--gold);}
+
+    .item-img{
+      width:100%;aspect-ratio:1/1;
+      display:flex;align-items:center;justify-content:center;
+      background:#0d0d0d;font-size:4rem;
+      position:relative;overflow:hidden;
+    }
+    .item-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(40%);transition:filter .3s;}
+    .item-card:hover .item-img img{filter:grayscale(0%);}
+
+    .item-info{padding:12px 14px 10px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+    .item-name{font-size:.78rem;font-weight:600;letter-spacing:.3px;line-height:1.3;flex:1;}
+
+    .plus-btn{
+      width:32px;height:32px;border-radius:50%;
+      background:var(--gold);border:none;color:#000;
+      font-size:1.1rem;font-weight:700;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      flex-shrink:0;transition:background .2s,transform .15s;
+      line-height:1;
+    }
+    .plus-btn:hover{background:var(--gold-light);transform:scale(1.12);}
+    .item-card.in-box .plus-btn{background:#333;color:var(--gold);}
+
+    .item-added-badge{
+      position:absolute;top:8px;right:8px;
+      background:var(--gold);color:#000;border-radius:50%;
+      width:22px;height:22px;font-size:.65rem;font-weight:700;
+      display:none;align-items:center;justify-content:center;
+    }
+    .item-card.in-box .item-added-badge{display:flex;}
+
+    /* SECTION DIVIDER */
+    .divider{height:1px;background:var(--card-border);margin:40px 0;}
+
+    /* CONTACT */
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:32px;}
+    .form-field{display:flex;flex-direction:column;gap:6px;}
+    .form-label{font-size:.74rem;color:var(--text-muted);letter-spacing:.5px;}
+    .req{color:var(--gold);}
+    .form-input{
+      background:#1a1a1a;border:1px solid var(--card-border);
+      border-radius:8px;color:var(--text-main);font-family:var(--font-body);
+      font-size:.88rem;padding:12px 16px;transition:border-color .3s;width:100%;
+    }
+    .form-input:focus{outline:none;border-color:var(--gold);}
+    .form-input.error{border-color:#e05 !important;}
+    .form-error{font-size:.72rem;color:#e05;min-height:14px;}
+
+    /* SUBMIT */
+    .submit-btn{
+      width:100%;padding:18px;border:none;border-radius:12px;
+      background:#25D366;color:#fff;font-size:1rem;font-weight:700;
+      letter-spacing:.5px;cursor:pointer;display:flex;align-items:center;
+      justify-content:center;gap:12px;transition:opacity .2s,transform .2s;
+      font-family:var(--font-body);
+    }
+    .submit-btn:hover{opacity:.88;transform:translateY(-2px);}
+
+    @media(max-width:560px){
+      .form-grid{grid-template-columns:1fr;}
+      .items-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;}
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-back" href="index.html#gifts"><i class="fas fa-arrow-left"></i> Back to Gifts</a>
+    <span class="nav-logo">CADEAU LIK</span>
+    <span></span>
+  </nav>
+
+  <div class="page">
+
+    <div class="page-header">
+      <h1>Build Your <em>Own</em> Box</h1>
+      <p>Describe what you have in mind, then pick the items you want inside.</p>
+    </div>
+
+    <!-- STEP 1 — DESCRIBE -->
+    <div class="step-label"><span class="step-num">1</span> Describe your vision <span class="step-line"></span></div>
+    <div class="desc-field">
+      <textarea class="desc-textarea" id="description" placeholder="e.g. I want a romantic box for my wife's birthday — red & gold theme, she loves roses and dark chocolate, something elegant and memorable..."></textarea>
+    </div>
+
+    <!-- STEP 2 — PICK ITEMS -->
+    <div class="step-label"><span class="step-num">2</span> Pick items for your box <span class="step-line"></span></div>
+
+    <!-- BOX PREVIEW -->
+    <div class="box-preview" id="boxPreview">
+      <div class="box-empty" id="boxEmpty">
+        <i class="fas fa-box-open"></i>
+        Your box is empty — tap <strong style="color:var(--gold)">+</strong> on any item below to add it
+      </div>
+    </div>
+
+    <!-- NOTICE -->
+    <div class="notice">
+      <i class="fas fa-comments"></i>
+      <span><strong>Availability is confirmed on WhatsApp.</strong> The items you add here will be discussed with our team to check stock and agree on pricing before any payment is made.</span>
+    </div>
+
+    <!-- ITEMS GRID -->
+    <div class="items-grid" id="itemsGrid"></div>
+
+    <div class="divider"></div>
+
+    <!-- STEP 3 — CONTACT -->
+    <div class="step-label"><span class="step-num">3</span> Your contact <span class="step-line"></span></div>
+    <div class="form-grid">
+      <div class="form-field">
+        <label class="form-label" for="custName">Full Name <span class="req">*</span></label>
+        <input class="form-input" id="custName" type="text" placeholder="Your full name" />
+        <span class="form-error" id="err-custName"></span>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="custPhone">Phone <span class="req">*</span></label>
+        <input class="form-input" id="custPhone" type="tel" placeholder="+212 6XX XXX XXX" />
+        <span class="form-error" id="err-custPhone"></span>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="submitBtn">
+      <i class="fab fa-whatsapp"></i> Send My Request on WhatsApp
+    </button>
+
+  </div>
+
+  <script>
+    const ITEMS = [
+      { name:'Luxury Gift Wrap',      emoji:'🎀' },
+      { name:'Artisan Chocolates',    emoji:'🍫' },
+      { name:'Premium Flowers',       emoji:'🌹' },
+      { name:'Scented Candle',        emoji:'🕯️' },
+      { name:'Personal Card',         emoji:'💌' },
+      { name:'Premium Perfume',       emoji:'🌸' },
+      { name:'Silk Ribbon',           emoji:'🎗️' },
+      { name:'Gold Keepsake Box',     emoji:'✨' },
+      { name:'Plush Toy',             emoji:'🧸' },
+      { name:'Custom Jewelry',        emoji:'💍' },
+      { name:'Luxury Skincare',       emoji:'🧴' },
+      { name:'Gourmet Sweets',        emoji:'🍬' },
+    ];
+
+    const selected = new Set();
+    const grid     = document.getElementById('itemsGrid');
+    const preview  = document.getElementById('boxPreview');
+    const emptyEl  = document.getElementById('boxEmpty');
+
+    function renderGrid() {
+      grid.innerHTML = ITEMS.map((item, i) => `
+        <div class="item-card${selected.has(item.name) ? ' in-box' : ''}" id="card-${i}">
+          <div class="item-img">${item.emoji}</div>
+          <div class="item-added-badge"><i class="fas fa-check"></i></div>
+          <div class="item-info">
+            <span class="item-name">${item.name}</span>
+            <button class="plus-btn" onclick="toggleItem(${i})" title="${selected.has(item.name) ? 'Remove' : 'Add'}">
+              ${selected.has(item.name) ? '<i class="fas fa-minus"></i>' : '<i class="fas fa-plus"></i>'}
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderPreview() {
+      const tags = [...selected].map(name => {
+        const item = ITEMS.find(it => it.name === name);
+        return `<div class="box-tag" id="tag-${name.replace(/\s/g,'_')}">
+          <span class="box-tag-emoji">${item.emoji}</span>
+          <span>${name}</span>
+          <button class="box-tag-remove" onclick="removeByName('${name}')" title="Remove"><i class="fas fa-times"></i></button>
+        </div>`;
+      }).join('');
+
+      preview.innerHTML = selected.size
+        ? tags
+        : `<div class="box-empty" id="boxEmpty">
+            <i class="fas fa-box-open"></i>
+            Your box is empty — tap <strong style="color:var(--gold)">+</strong> on any item below to add it
+          </div>`;
+    }
+
+    function toggleItem(i) {
+      const name = ITEMS[i].name;
+      if (selected.has(name)) selected.delete(name);
+      else selected.add(name);
+      renderGrid();
+      renderPreview();
+    }
+
+    function removeByName(name) {
+      selected.delete(name);
+      renderGrid();
+      renderPreview();
+    }
+
+    renderGrid();
+
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      const fields = [
+        { id:'custName',  err:'err-custName',  label:'Full name' },
+        { id:'custPhone', err:'err-custPhone', label:'Phone' },
+      ];
+      let valid = true;
+      fields.forEach(f => {
+        const el = document.getElementById(f.id);
+        const errEl = document.getElementById(f.err);
+        el.classList.remove('error'); errEl.textContent = '';
+        if (!el.value.trim()) { el.classList.add('error'); errEl.textContent = f.label + ' is required'; valid = false; }
+      });
+      if (!valid) return;
+
+      const name        = document.getElementById('custName').value.trim();
+      const phone       = document.getElementById('custPhone').value.trim();
+      const description = document.getElementById('description').value.trim();
+
+      let text = `Hello! I'd like to build a custom gift box on Cadeau Lik 🎁\n\n`;
+      text += `Name: ${name}\nPhone: ${phone}\n\n`;
+
+      if (description) text += `━━━ MY VISION ━━━\n${description}\n\n`;
+
+      if (selected.size) {
+        text += `━━━ ITEMS I WANT ━━━\n`;
+        [...selected].forEach(item => { text += `  • ${item}\n`; });
+        text += `\n`;
+      }
+
+      text += `Please confirm availability and pricing so we can finalize the box. Thank you!`;
+
+      window.open(`https://wa.me/212783552622?text=${encodeURIComponent(text)}`, '_blank');
+    });
+  </script>
+</body>
+</html>
